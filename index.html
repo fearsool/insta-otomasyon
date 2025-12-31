@@ -3,80 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Reels Auto Creator</title>
+    <title>🎬 MEGA Content Creator</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: white;
-        }
-        .container {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        h1 { font-size: 28px; margin-bottom: 10px; }
-        p { opacity: 0.7; margin-bottom: 30px; }
-        .badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            background: linear-gradient(90deg, #00b894, #00cec9);
-            margin-bottom: 20px;
-        }
-        .status {
-            background: rgba(0,184,148,0.2);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-        .status h3 { color: #00b894; margin-bottom: 10px; }
-        .info {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: left;
-            font-size: 14px;
-        }
-        .info li { margin: 8px 0; opacity: 0.8; }
-        a { color: #00b894; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;padding:20px;color:#fff}
+        .container{max-width:1000px;margin:0 auto}
+        .header{text-align:center;margin-bottom:25px}
+        .header h1{font-size:26px;margin-bottom:8px}
+        .badge{display:inline-block;padding:5px 15px;border-radius:20px;font-size:11px;background:linear-gradient(90deg,#00b894,#00cec9);margin-bottom:10px}
+        .panel{background:rgba(255,255,255,0.05);border-radius:15px;padding:20px;margin-bottom:15px}
+        .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+        .cat-btn{padding:15px 10px;background:rgba(255,255,255,0.08);border:2px solid transparent;border-radius:12px;color:#fff;cursor:pointer;text-align:center;transition:all 0.3s}
+        .cat-btn:hover{background:rgba(255,255,255,0.15)}
+        .cat-btn.active{border-color:#00b894;background:rgba(0,184,148,0.2)}
+        .cat-btn .icon{font-size:28px;display:block;margin-bottom:5px}
+        .cat-btn .label{font-size:11px;opacity:0.8}
+        .input-group{margin-bottom:12px}
+        .input-group label{display:block;margin-bottom:4px;font-size:13px;opacity:0.8}
+        .input-group input{width:100%;padding:10px;border:2px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(0,0,0,0.3);color:#fff;font-size:13px}
+        .btn{width:100%;padding:16px;background:linear-gradient(135deg,#00b894,#00cec9);border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:600;cursor:pointer}
+        .btn:hover{transform:scale(1.02)}
+        .btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .step{padding:10px 12px;margin:6px 0;border-radius:8px;background:rgba(255,255,255,0.05);border-left:4px solid #333;display:flex;align-items:center;font-size:13px}
+        .step.active{border-color:#f39c12;background:rgba(243,156,18,0.1)}
+        .step.done{border-color:#00b894;background:rgba(0,184,148,0.1)}
+        .step-icon{font-size:18px;margin-right:10px}
+        .output-box{background:#000;padding:15px;border-radius:10px;margin-top:15px;display:none}
+        .output-box h3{color:#00b894;margin-bottom:12px;font-size:15px}
+        .config-toggle{background:none;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;margin-bottom:12px}
+        .config-panel{display:none;margin-bottom:15px}
+        .config-panel.show{display:block}
+        .warning{background:rgba(243,156,18,0.2);padding:8px;border-radius:6px;font-size:11px;margin-bottom:12px}
+        .content-card{background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;margin-bottom:10px}
+        .content-card h4{color:#00b894;margin-bottom:8px;font-size:13px}
+        .content-card p{font-size:12px;line-height:1.5;white-space:pre-wrap}
+        .media-box{background:rgba(0,184,148,0.1);padding:15px;border-radius:10px;margin-top:15px;text-align:center;display:none}
+        .media-box img{max-width:100%;border-radius:8px;margin-bottom:10px}
+        .audio-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+        .audio-btn{padding:10px 20px;background:#00b894;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:13px}
+        .audio-btn:hover{background:#00a884}
+        @media(max-width:600px){.category-grid{grid-template-columns:repeat(2,1fr)}}
     </style>
 </head>
 <body>
     <div class="container">
-        <span class="badge">✅ DEPLOYED</span>
-        <h1>🎬 Reels Auto Creator</h1>
-        <p>AI-Powered Instagram Reels Automation</p>
-        
-        <div class="status">
-            <h3>🟢 Sistem Aktif</h3>
-            <p>Python backend hazır</p>
+        <div class="header">
+            <span class="badge">🤖 2025 VIRAL CONTENT</span>
+            <h1>🎬 MEGA Content Creator</h1>
+            <p style="opacity:0.7;font-size:13px">Görsel + Ses + SEO = Viral İçerik</p>
         </div>
         
-        <div class="info">
-            <strong>📋 Özellikler:</strong>
-            <ul>
-                <li>✅ Viral trend analizi</li>
-                <li>✅ Otomatik script yazımı</li>
-                <li>✅ AI video önerileri</li>
-                <li>✅ Instagram paylaşım planı</li>
-            </ul>
+        <div class="panel">
+            <h3 style="margin-bottom:12px;font-size:14px">📂 Kategori Seç</h3>
+            <div class="category-grid" id="categoryGrid">
+                <button class="cat-btn active" data-cat="kuafor"><span class="icon">💇</span><span class="label">Kuaför</span></button>
+                <button class="cat-btn" data-cat="ai"><span class="icon">🤖</span><span class="label">Yapay Zeka</span></button>
+                <button class="cat-btn" data-cat="bilim"><span class="icon">🔬</span><span class="label">Bilim</span></button>
+                <button class="cat-btn" data-cat="fitness"><span class="icon">💪</span><span class="label">Fitness</span></button>
+                <button class="cat-btn" data-cat="finans"><span class="icon">💰</span><span class="label">Finans</span></button>
+                <button class="cat-btn" data-cat="yemek"><span class="icon">🍳</span><span class="label">Yemek</span></button>
+                <button class="cat-btn" data-cat="sanat"><span class="icon">🎨</span><span class="label">Sanat</span></button>
+                <button class="cat-btn" data-cat="gelisim"><span class="icon">🧘</span><span class="label">Kişisel Gelişim</span></button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <button class="config-toggle" onclick="toggleConfig()">⚙️ API Ayarları</button>
+            <div class="config-panel" id="configPanel">
+                <div class="warning">⚠️ <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:#00b894">HuggingFace Token</a> gerekli!</div>
+                <div class="input-group">
+                    <label>🔑 HuggingFace Token</label>
+                    <input type="password" id="tokenInput" placeholder="hf_xxxxxxxxxxxxx">
+                </div>
+                <button onclick="saveToken()" style="padding:8px 16px;background:#00b894;border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:12px">💾 Kaydet</button>
+            </div>
+            <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 İÇERİK ÜRET</button>
         </div>
         
-        <p style="margin-top: 20px; font-size: 12px;">
-            <a href="https://github.com/fearsool/insta-otomasyon" target="_blank">📂 GitHub Repo</a>
-        </p>
+        <div class="panel" id="stepsPanel" style="display:none">
+            <h3 style="margin-bottom:10px;font-size:14px">📊 Otomasyon</h3>
+            <div class="step" id="s1"><span class="step-icon">🔍</span>Trend Konu Bul</div>
+            <div class="step" id="s2"><span class="step-icon">❓</span>Sorun Tanımla</div>
+            <div class="step" id="s3"><span class="step-icon">💡</span>Çözüm Üret</div>
+            <div class="step" id="s4"><span class="step-icon">📝</span>Reels Script</div>
+            <div class="step" id="s5"><span class="step-icon">🖼️</span>Görsel Üret</div>
+            <div class="step" id="s6"><span class="step-icon">🏷️</span>SEO & Hashtag</div>
+        </div>
+        
+        <div class="media-box" id="mediaBox">
+            <img id="generatedImage" src="" alt="AI Generated">
+            <div class="audio-controls">
+                <button class="audio-btn" onclick="speakText()">🔊 Seslendirmeyi Dinle</button>
+                <button class="audio-btn" onclick="stopSpeech()">⏹️ Durdur</button>
+            </div>
+        </div>
+        
+        <div class="output-box" id="outputBox">
+            <h3>📋 Üretilen İçerik</h3>
+            <div id="outputContent"></div>
+        </div>
     </div>
+
+    <script>
+        const API = 'https://router.huggingface.co/v1/chat/completions';
+        let selectedCategory = 'kuafor';
+        let generatedScript = '';
+        
+        // Category selection
+        document.querySelectorAll('.cat-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCategory = btn.dataset.cat;
+            };
+        });
+        
+        function toggleConfig() { document.getElementById('configPanel').classList.toggle('show'); }
+        function saveToken() {
+            const token = document.getElementById('tokenInput').value;
+            if(token) { localStorage.setItem('hf_token', token); alert('✅ Kaydedildi!'); toggleConfig(); }
+        }
+        function getToken() { return localStorage.getItem('hf_token') || ''; }
+        window.onload = () => { const s = getToken(); if(s) document.getElementById('tokenInput').value = s; }
+        
+        const CATEGORIES = {
+            kuafor: { name: 'Saç Bakımı', context: 'saç bakımı, kuaför, saç sağlığı', examples: 'saç dökülmesi, kırık uçlar, boyalı saç bakımı' },
+            ai: { name: 'Yapay Zeka', context: 'AI, yapay zeka, teknoloji', examples: 'ChatGPT güncellemeleri, yeni AI araçları, AI trendleri' },
+            bilim: { name: 'Bilim', context: 'bilim, uzay, keşifler', examples: 'uzay keşifleri, bilimsel buluşlar, ilginç bilgiler' },
+            fitness: { name: 'Fitness', context: 'spor, egzersiz, sağlık', examples: 'ev egzersizleri, kilo verme, kas yapma' },
+            finans: { name: 'Finans', context: 'para, yatırım, ekonomi', examples: 'tasarruf ipuçları, yatırım önerileri, pasif gelir' },
+            yemek: { name: 'Yemek', context: 'yemek, tarif, mutfak', examples: 'kolay tarifler, sağlıklı yemek, mutfak hileleri' },
+            sanat: { name: 'Sanat', context: 'sanat, tasarım, yaratıcılık', examples: 'tasarım trendleri, sanat teknikleri, yaratıcı projeler' },
+            gelisim: { name: 'Kişisel Gelişim', context: 'kişisel gelişim, motivasyon, üretkenlik', examples: 'zaman yönetimi, motivasyon, alışkanlıklar' }
+        };
+        
+        function getSteps(cat) {
+            const c = CATEGORIES[cat];
+            return [
+                { id:'s1', title:'🔍 Trend Konu', prompt:`Sen bir ${c.name} uzmanısın. 2025 yılında Google'da ve Instagram'da EN ÇOK ARANAN ${c.name} konusunu bul.\n\nÖrnekler: ${c.examples}\n\nSadece 1 konu/soru yaz. Güncel ve viral potansiyelli olsun.` },
+                { id:'s2', title:'❓ Sorun', prompt:`Bu konuyu detaylı açıkla:\n\n{PREV}\n\n3-4 cümleyle:\n- Neden önemli?\n- Kimleri ilgilendiriyor?\n- Ne gibi sorunlar yaşanıyor?\n\nDoğal ve samimi bir dille yaz.` },
+                { id:'s3', title:'💡 Çözüm', prompt:`Bu konu için pratik çözümler üret:\n\n{PREV}\n\n5 maddelik liste:\n1. Hemen uygulanabilir ipucu\n2. Profesyonel öneri\n3. Kaçınılması gereken hata\n4. Bonus bilgi\n5. Sonuç/fayda\n\nKısa ve uygulanabilir.` },
+                { id:'s4', title:'📝 Script', prompt:`15-30 saniyelik Instagram Reels scripti yaz:\n\n{PREV}\n\n2025 Instagram algoritmasına uygun format:\nHOOK (0-3sn): Şok edici soru veya bilgi\nSOUN (3-8sn): Problemi göster\nÇÖZÜM (8-25sn): Adım adım çözüm\nCTA (25-30sn): Kaydet + Takip et\n\nDoğal konuşma dili, samimi, profesyonel.` },
+                { id:'s5', title:'🖼️ Görsel', prompt:`Bu içerik için AI görsel promptu oluştur:\n\n{PREV}\n\nİngilizce, Stable Diffusion için optimize:\n- Konu ile ilgili görsel\n- Instagram Reels formatı (9:16)\n- Modern, profesyonel\n- Parlak renkler\n\nSadece İngilizce prompt yaz, başka bir şey yazma.` },
+                { id:'s6', title:'🏷️ SEO', prompt:`Instagram SEO optimizasyonu:\n\n{PREV}\n\n1. BAŞLIK (60 karakter, anahtar kelime)\n2. CAPTION (3 satır, emoji, değer)\n3. HASHTAG (15 adet - 5 popüler, 5 orta, 5 niş)\n4. EN İYİ SAAT (TR)\n5. CTA (kaydet/paylaş çağrısı)\n\n2025 Instagram algoritmasına uygun.` }
+            ];
+        }
+        
+        async function callAI(prompt) {
+            const token = getToken();
+            if(!token) throw new Error('Token gerekli!');
+            const res = await fetch(API, {
+                method:'POST',
+                headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                body:JSON.stringify({model:'google/gemma-2-2b-it',messages:[{role:'user',content:prompt}],max_tokens:500,temperature:0.8})
+            });
+            const data = await res.json();
+            if(data.error) throw new Error(data.error);
+            return data.choices?.[0]?.message?.content || '';
+        }
+        
+        async function generateImage(prompt) {
+            const token = getToken();
+            try {
+                const res = await fetch('https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0', {
+                    method:'POST',
+                    headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                    body:JSON.stringify({inputs:prompt})
+                });
+                if(!res.ok) return null;
+                const blob = await res.blob();
+                return URL.createObjectURL(blob);
+            } catch(e) { return null; }
+        }
+        
+        function speakText() {
+            if(!generatedScript) return;
+            const utterance = new SpeechSynthesisUtterance(generatedScript);
+            utterance.lang = 'tr-TR';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+            const voices = speechSynthesis.getVoices();
+            const trVoice = voices.find(v => v.lang.includes('tr'));
+            if(trVoice) utterance.voice = trVoice;
+            speechSynthesis.speak(utterance);
+        }
+        
+        function stopSpeech() { speechSynthesis.cancel(); }
+        
+        async function runWorkflow() {
+            const token = getToken();
+            if(!token) { alert('⚠️ Token girin!'); toggleConfig(); return; }
+            
+            const btn = document.getElementById('startBtn');
+            const stepsPanel = document.getElementById('stepsPanel');
+            const outputBox = document.getElementById('outputBox');
+            const outputContent = document.getElementById('outputContent');
+            const mediaBox = document.getElementById('mediaBox');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Üretiliyor...';
+            stepsPanel.style.display = 'block';
+            outputBox.style.display = 'none';
+            mediaBox.style.display = 'none';
+            outputContent.innerHTML = '';
+            generatedScript = '';
+            
+            const STEPS = getSteps(selectedCategory);
+            STEPS.forEach(s => document.getElementById(s.id).className = 'step');
+            
+            let prev = '', html = '', imgPrompt = '';
+            
+            for(let i = 0; i < STEPS.length; i++) {
+                const step = STEPS[i];
+                document.getElementById(step.id).className = 'step active';
+                
+                try {
+                    const prompt = step.prompt.replace('{PREV}', prev);
+                    const result = await callAI(prompt);
+                    prev = result;
+                    document.getElementById(step.id).className = 'step done';
+                    
+                    if(step.id === 's4') generatedScript = result;
+                    if(step.id === 's5') imgPrompt = result;
+                    
+                    html += `<div class="content-card"><h4>${step.title}</h4><p>${result}</p></div>`;
+                } catch(e) {
+                    document.getElementById(step.id).className = 'step';
+                    html += `<div class="content-card"><h4>${step.title}</h4><p style="color:#e74c3c">Hata: ${e.message}</p></div>`;
+                    break;
+                }
+                await new Promise(r => setTimeout(r, 1500));
+            }
+            
+            // Generate image
+            if(imgPrompt) {
+                const imgUrl = await generateImage(imgPrompt);
+                if(imgUrl) {
+                    document.getElementById('generatedImage').src = imgUrl;
+                    mediaBox.style.display = 'block';
+                }
+            }
+            
+            outputBox.style.display = 'block';
+            outputContent.innerHTML = html;
+            btn.disabled = false;
+            btn.textContent = '🔄 YENİ İÇERİK';
+        }
+        
+        // Load voices
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+    </script>
 </body>
 </html>
