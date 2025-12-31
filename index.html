@@ -1,115 +1,381 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎬 MEGA Content Creator</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:-apple-system,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;padding:20px;color:#fff}
-        .container{max-width:1000px;margin:0 auto}
-        .header{text-align:center;margin-bottom:25px}
-        .header h1{font-size:26px;margin-bottom:8px}
-        .badge{display:inline-block;padding:5px 15px;border-radius:20px;font-size:11px;background:linear-gradient(90deg,#00b894,#00cec9);margin-bottom:10px}
-        .panel{background:rgba(255,255,255,0.05);border-radius:15px;padding:20px;margin-bottom:15px}
-        .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-        .cat-btn{padding:15px 10px;background:rgba(255,255,255,0.08);border:2px solid transparent;border-radius:12px;color:#fff;cursor:pointer;text-align:center;transition:all 0.3s}
-        .cat-btn:hover{background:rgba(255,255,255,0.15)}
-        .cat-btn.active{border-color:#00b894;background:rgba(0,184,148,0.2)}
-        .cat-btn .icon{font-size:28px;display:block;margin-bottom:5px}
-        .cat-btn .label{font-size:11px;opacity:0.8}
-        .input-group{margin-bottom:12px}
-        .input-group label{display:block;margin-bottom:4px;font-size:13px;opacity:0.8}
-        .input-group input{width:100%;padding:10px;border:2px solid rgba(255,255,255,0.1);border-radius:8px;background:rgba(0,0,0,0.3);color:#fff;font-size:13px}
-        .btn{width:100%;padding:16px;background:linear-gradient(135deg,#00b894,#00cec9);border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:600;cursor:pointer}
-        .btn:hover{transform:scale(1.02)}
-        .btn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
-        .step{padding:10px 12px;margin:6px 0;border-radius:8px;background:rgba(255,255,255,0.05);border-left:4px solid #333;display:flex;align-items:center;font-size:13px}
-        .step.active{border-color:#f39c12;background:rgba(243,156,18,0.1)}
-        .step.done{border-color:#00b894;background:rgba(0,184,148,0.1)}
-        .step-icon{font-size:18px;margin-right:10px}
-        .output-box{background:#000;padding:15px;border-radius:10px;margin-top:15px;display:none}
-        .output-box h3{color:#00b894;margin-bottom:12px;font-size:15px}
-        .config-toggle{background:none;border:1px solid rgba(255,255,255,0.2);color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;margin-bottom:12px}
-        .config-panel{display:none;margin-bottom:15px}
-        .config-panel.show{display:block}
-        .warning{background:rgba(243,156,18,0.2);padding:8px;border-radius:6px;font-size:11px;margin-bottom:12px}
-        .content-card{background:rgba(255,255,255,0.05);padding:12px;border-radius:8px;margin-bottom:10px}
-        .content-card h4{color:#00b894;margin-bottom:8px;font-size:13px}
-        .content-card p{font-size:12px;line-height:1.5;white-space:pre-wrap}
-        .media-box{background:rgba(0,184,148,0.1);padding:15px;border-radius:10px;margin-top:15px;text-align:center;display:none}
-        .media-box img{max-width:100%;border-radius:8px;margin-bottom:10px}
-        .audio-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-        .audio-btn{padding:10px 20px;background:#00b894;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:13px}
-        .audio-btn:hover{background:#00a884}
-        @media(max-width:600px){.category-grid{grid-template-columns:repeat(2,1fr)}}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            padding: 15px;
+            color: #fff
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 6px
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 10px;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            margin-bottom: 8px
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px
+        }
+
+        .cat-btn {
+            padding: 12px 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-size: 11px
+        }
+
+        .cat-btn:hover {
+            background: rgba(255, 255, 255, 0.15)
+        }
+
+        .cat-btn.active {
+            border-color: #00b894;
+            background: rgba(0, 184, 148, 0.2)
+        }
+
+        .cat-btn .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .input-group {
+            margin-bottom: 10px
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 3px;
+            font-size: 12px;
+            opacity: 0.8
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 12px
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn:hover {
+            transform: scale(1.02)
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none
+        }
+
+        .step {
+            padding: 8px 10px;
+            margin: 5px 0;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #333;
+            display: flex;
+            align-items: center;
+            font-size: 12px
+        }
+
+        .step.active {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.1)
+        }
+
+        .step.done {
+            border-color: #00b894;
+            background: rgba(0, 184, 148, 0.1)
+        }
+
+        .step-icon {
+            font-size: 16px;
+            margin-right: 8px
+        }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 12px
+        }
+
+        .config-toggle {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 10px;
+            margin-bottom: 10px
+        }
+
+        .config-panel {
+            display: none;
+            margin-bottom: 12px
+        }
+
+        .config-panel.show {
+            display: block
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px
+        }
+
+        .content-section h4 {
+            color: #00b894;
+            margin-bottom: 8px;
+            font-size: 13px
+        }
+
+        .media-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px
+        }
+
+        .media-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center
+        }
+
+        .media-card canvas {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 8px
+        }
+
+        .media-card h5 {
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: #00b894
+        }
+
+        .audio-btn {
+            padding: 10px 15px;
+            background: #00b894;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 3px
+        }
+
+        .audio-btn:hover {
+            background: #00a884
+        }
+
+        .audio-btn.stop {
+            background: #e74c3c
+        }
+
+        .audio-btn.download {
+            background: #6c5ce7
+        }
+
+        .script-box {
+            background: #000;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #0f0;
+            white-space: pre-wrap
+        }
+
+        .copy-btn {
+            padding: 8px 15px;
+            background: #6c5ce7;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+            margin-top: 8px
+        }
+
+        .hashtags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px
+        }
+
+        .hashtag {
+            background: rgba(0, 184, 148, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px
+        }
+
+        @media(max-width:600px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .media-section {
+                grid-template-columns: 1fr
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-            <span class="badge">🤖 2025 VIRAL CONTENT</span>
-            <h1>🎬 MEGA Content Creator</h1>
-            <p style="opacity:0.7;font-size:13px">Görsel + Ses + SEO = Viral İçerik</p>
+            <span class="badge">🤖 FULL AUTOMATION 2025</span>
+            <h1>🎬 Viral Content Creator</h1>
+            <p style="opacity:0.6;font-size:12px">Görsel + Ses + SEO = Hazır İçerik</p>
         </div>
-        
+
         <div class="panel">
-            <h3 style="margin-bottom:12px;font-size:14px">📂 Kategori Seç</h3>
-            <div class="category-grid" id="categoryGrid">
-                <button class="cat-btn active" data-cat="kuafor"><span class="icon">💇</span><span class="label">Kuaför</span></button>
-                <button class="cat-btn" data-cat="ai"><span class="icon">🤖</span><span class="label">Yapay Zeka</span></button>
-                <button class="cat-btn" data-cat="bilim"><span class="icon">🔬</span><span class="label">Bilim</span></button>
-                <button class="cat-btn" data-cat="fitness"><span class="icon">💪</span><span class="label">Fitness</span></button>
-                <button class="cat-btn" data-cat="finans"><span class="icon">💰</span><span class="label">Finans</span></button>
-                <button class="cat-btn" data-cat="yemek"><span class="icon">🍳</span><span class="label">Yemek</span></button>
-                <button class="cat-btn" data-cat="sanat"><span class="icon">🎨</span><span class="label">Sanat</span></button>
-                <button class="cat-btn" data-cat="gelisim"><span class="icon">🧘</span><span class="label">Kişisel Gelişim</span></button>
+            <h4 style="margin-bottom:10px;font-size:13px">📂 Kategori Seç</h4>
+            <div class="category-grid">
+                <button class="cat-btn active" data-cat="kuafor"><span class="icon">💇</span>Kuaför</button>
+                <button class="cat-btn" data-cat="ai"><span class="icon">🤖</span>Yapay Zeka</button>
+                <button class="cat-btn" data-cat="bilim"><span class="icon">🔬</span>Bilim</button>
+                <button class="cat-btn" data-cat="fitness"><span class="icon">💪</span>Fitness</button>
+                <button class="cat-btn" data-cat="finans"><span class="icon">💰</span>Finans</button>
+                <button class="cat-btn" data-cat="yemek"><span class="icon">🍳</span>Yemek</button>
+                <button class="cat-btn" data-cat="sanat"><span class="icon">🎨</span>Sanat</button>
+                <button class="cat-btn" data-cat="gelisim"><span class="icon">🧘</span>Gelişim</button>
             </div>
         </div>
 
         <div class="panel">
-            <button class="config-toggle" onclick="toggleConfig()">⚙️ API Ayarları</button>
+            <button class="config-toggle" onclick="toggleConfig()">⚙️ API Token</button>
             <div class="config-panel" id="configPanel">
-                <div class="warning">⚠️ <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:#00b894">HuggingFace Token</a> gerekli!</div>
                 <div class="input-group">
-                    <label>🔑 HuggingFace Token</label>
+                    <label>🔑 <a href="https://huggingface.co/settings/tokens" target="_blank"
+                            style="color:#00b894">HuggingFace Token</a></label>
                     <input type="password" id="tokenInput" placeholder="hf_xxxxxxxxxxxxx">
                 </div>
-                <button onclick="saveToken()" style="padding:8px 16px;background:#00b894;border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:12px">💾 Kaydet</button>
+                <button onclick="saveToken()"
+                    style="padding:6px 12px;background:#00b894;border:none;border-radius:5px;color:#fff;cursor:pointer;font-size:11px">💾
+                    Kaydet</button>
             </div>
-            <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 İÇERİK ÜRET</button>
+            <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 İÇERİK OLUŞTUR</button>
         </div>
-        
+
         <div class="panel" id="stepsPanel" style="display:none">
-            <h3 style="margin-bottom:10px;font-size:14px">📊 Otomasyon</h3>
-            <div class="step" id="s1"><span class="step-icon">🔍</span>Trend Konu Bul</div>
-            <div class="step" id="s2"><span class="step-icon">❓</span>Sorun Tanımla</div>
-            <div class="step" id="s3"><span class="step-icon">💡</span>Çözüm Üret</div>
-            <div class="step" id="s4"><span class="step-icon">📝</span>Reels Script</div>
-            <div class="step" id="s5"><span class="step-icon">🖼️</span>Görsel Üret</div>
-            <div class="step" id="s6"><span class="step-icon">🏷️</span>SEO & Hashtag</div>
+            <div class="step" id="s1"><span class="step-icon">🔍</span>Trend Konu Bulunuyor</div>
+            <div class="step" id="s2"><span class="step-icon">📝</span>Konuşma Metni Yazılıyor</div>
+            <div class="step" id="s3"><span class="step-icon">🖼️</span>Görsel + CTA Oluşturuluyor</div>
+            <div class="step" id="s4"><span class="step-icon">🏷️</span>SEO & Hashtag</div>
         </div>
-        
-        <div class="media-box" id="mediaBox">
-            <img id="generatedImage" src="" alt="AI Generated">
-            <div class="audio-controls">
-                <button class="audio-btn" onclick="speakText()">🔊 Seslendirmeyi Dinle</button>
-                <button class="audio-btn" onclick="stopSpeech()">⏹️ Durdur</button>
+
+        <div class="output-box" id="outputBox" style="display:none">
+
+            <div class="media-section">
+                <div class="media-card">
+                    <h5>🖼️ Görsel + CTA</h5>
+                    <canvas id="finalCanvas" width="540" height="960"></canvas>
+                    <button class="audio-btn download" onclick="downloadImage()">📥 Görseli İndir</button>
+                </div>
+                <div class="media-card">
+                    <h5>🔊 Seslendirme</h5>
+                    <button class="audio-btn" onclick="speakScript()">▶️ Dinle</button>
+                    <button class="audio-btn stop" onclick="stopSpeech()">⏹️ Durdur</button>
+                    <p style="font-size:10px;opacity:0.5;margin-top:8px">Doğal Türkçe ses</p>
+                    <div style="margin-top:10px">
+                        <label style="font-size:10px">Hız:</label>
+                        <input type="range" id="speedRange" min="0.5" max="1.2" step="0.1" value="0.9"
+                            style="width:80%">
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="output-box" id="outputBox">
-            <h3>📋 Üretilen İçerik</h3>
-            <div id="outputContent"></div>
+
+            <div class="content-section">
+                <h4>📢 Konuşma Metni</h4>
+                <div class="script-box" id="scriptBox"></div>
+                <button class="copy-btn" onclick="copyScript()">📋 Kopyala</button>
+            </div>
+
+            <div class="content-section">
+                <h4>🏷️ CTA & Hashtags</h4>
+                <p id="ctaText" style="font-size:14px;margin-bottom:10px;color:#00b894"></p>
+                <div class="hashtags" id="hashtagBox"></div>
+                <p id="bestTime" style="font-size:11px;margin-top:10px;opacity:0.7"></p>
+            </div>
         </div>
     </div>
 
     <script>
         const API = 'https://router.huggingface.co/v1/chat/completions';
         let selectedCategory = 'kuafor';
-        let generatedScript = '';
-        
-        // Category selection
+        let currentScript = '';
+        let currentCTA = '';
+
         document.querySelectorAll('.cat-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -117,141 +383,250 @@
                 selectedCategory = btn.dataset.cat;
             };
         });
-        
+
         function toggleConfig() { document.getElementById('configPanel').classList.toggle('show'); }
-        function saveToken() {
-            const token = document.getElementById('tokenInput').value;
-            if(token) { localStorage.setItem('hf_token', token); alert('✅ Kaydedildi!'); toggleConfig(); }
-        }
+        function saveToken() { localStorage.setItem('hf_token', document.getElementById('tokenInput').value); alert('✅ Kaydedildi!'); toggleConfig(); }
         function getToken() { return localStorage.getItem('hf_token') || ''; }
-        window.onload = () => { const s = getToken(); if(s) document.getElementById('tokenInput').value = s; }
-        
+        window.onload = () => { if (getToken()) document.getElementById('tokenInput').value = getToken(); }
+
         const CATEGORIES = {
-            kuafor: { name: 'Saç Bakımı', context: 'saç bakımı, kuaför, saç sağlığı', examples: 'saç dökülmesi, kırık uçlar, boyalı saç bakımı' },
-            ai: { name: 'Yapay Zeka', context: 'AI, yapay zeka, teknoloji', examples: 'ChatGPT güncellemeleri, yeni AI araçları, AI trendleri' },
-            bilim: { name: 'Bilim', context: 'bilim, uzay, keşifler', examples: 'uzay keşifleri, bilimsel buluşlar, ilginç bilgiler' },
-            fitness: { name: 'Fitness', context: 'spor, egzersiz, sağlık', examples: 'ev egzersizleri, kilo verme, kas yapma' },
-            finans: { name: 'Finans', context: 'para, yatırım, ekonomi', examples: 'tasarruf ipuçları, yatırım önerileri, pasif gelir' },
-            yemek: { name: 'Yemek', context: 'yemek, tarif, mutfak', examples: 'kolay tarifler, sağlıklı yemek, mutfak hileleri' },
-            sanat: { name: 'Sanat', context: 'sanat, tasarım, yaratıcılık', examples: 'tasarım trendleri, sanat teknikleri, yaratıcı projeler' },
-            gelisim: { name: 'Kişisel Gelişim', context: 'kişisel gelişim, motivasyon, üretkenlik', examples: 'zaman yönetimi, motivasyon, alışkanlıklar' }
+            kuafor: { name: 'Saç Bakımı', topic: 'saç bakımı, saç sağlığı', color: '#e84393' },
+            ai: { name: 'Yapay Zeka', topic: 'AI, ChatGPT, yapay zeka araçları', color: '#0984e3' },
+            bilim: { name: 'Bilim', topic: 'bilimsel keşifler, uzay, teknoloji', color: '#6c5ce7' },
+            fitness: { name: 'Fitness', topic: 'egzersiz, spor, sağlık', color: '#00b894' },
+            finans: { name: 'Finans', topic: 'para yönetimi, yatırım', color: '#fdcb6e' },
+            yemek: { name: 'Yemek', topic: 'tarifler, mutfak ipuçları', color: '#e17055' },
+            sanat: { name: 'Sanat', topic: 'tasarım, yaratıcılık', color: '#fd79a8' },
+            gelisim: { name: 'Kişisel Gelişim', topic: 'motivasyon, üretkenlik', color: '#00cec9' }
         };
-        
-        function getSteps(cat) {
-            const c = CATEGORIES[cat];
-            return [
-                { id:'s1', title:'🔍 Trend Konu', prompt:`Sen bir ${c.name} uzmanısın. 2025 yılında Google'da ve Instagram'da EN ÇOK ARANAN ${c.name} konusunu bul.\n\nÖrnekler: ${c.examples}\n\nSadece 1 konu/soru yaz. Güncel ve viral potansiyelli olsun.` },
-                { id:'s2', title:'❓ Sorun', prompt:`Bu konuyu detaylı açıkla:\n\n{PREV}\n\n3-4 cümleyle:\n- Neden önemli?\n- Kimleri ilgilendiriyor?\n- Ne gibi sorunlar yaşanıyor?\n\nDoğal ve samimi bir dille yaz.` },
-                { id:'s3', title:'💡 Çözüm', prompt:`Bu konu için pratik çözümler üret:\n\n{PREV}\n\n5 maddelik liste:\n1. Hemen uygulanabilir ipucu\n2. Profesyonel öneri\n3. Kaçınılması gereken hata\n4. Bonus bilgi\n5. Sonuç/fayda\n\nKısa ve uygulanabilir.` },
-                { id:'s4', title:'📝 Script', prompt:`15-30 saniyelik Instagram Reels scripti yaz:\n\n{PREV}\n\n2025 Instagram algoritmasına uygun format:\nHOOK (0-3sn): Şok edici soru veya bilgi\nSOUN (3-8sn): Problemi göster\nÇÖZÜM (8-25sn): Adım adım çözüm\nCTA (25-30sn): Kaydet + Takip et\n\nDoğal konuşma dili, samimi, profesyonel.` },
-                { id:'s5', title:'🖼️ Görsel', prompt:`Bu içerik için AI görsel promptu oluştur:\n\n{PREV}\n\nİngilizce, Stable Diffusion için optimize:\n- Konu ile ilgili görsel\n- Instagram Reels formatı (9:16)\n- Modern, profesyonel\n- Parlak renkler\n\nSadece İngilizce prompt yaz, başka bir şey yazma.` },
-                { id:'s6', title:'🏷️ SEO', prompt:`Instagram SEO optimizasyonu:\n\n{PREV}\n\n1. BAŞLIK (60 karakter, anahtar kelime)\n2. CAPTION (3 satır, emoji, değer)\n3. HASHTAG (15 adet - 5 popüler, 5 orta, 5 niş)\n4. EN İYİ SAAT (TR)\n5. CTA (kaydet/paylaş çağrısı)\n\n2025 Instagram algoritmasına uygun.` }
-            ];
-        }
-        
+
         async function callAI(prompt) {
-            const token = getToken();
-            if(!token) throw new Error('Token gerekli!');
             const res = await fetch(API, {
-                method:'POST',
-                headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                body:JSON.stringify({model:'google/gemma-2-2b-it',messages:[{role:'user',content:prompt}],max_tokens:500,temperature:0.8})
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ model: 'google/gemma-2-2b-it', messages: [{ role: 'user', content: prompt }], max_tokens: 600, temperature: 0.7 })
             });
             const data = await res.json();
-            if(data.error) throw new Error(data.error);
+            if (data.error) throw new Error(data.error);
             return data.choices?.[0]?.message?.content || '';
         }
-        
+
         async function generateImage(prompt) {
-            const token = getToken();
             try {
                 const res = await fetch('https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0', {
-                    method:'POST',
-                    headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                    body:JSON.stringify({inputs:prompt})
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ inputs: prompt })
                 });
-                if(!res.ok) return null;
-                const blob = await res.blob();
-                return URL.createObjectURL(blob);
-            } catch(e) { return null; }
+                if (!res.ok) return null;
+                return URL.createObjectURL(await res.blob());
+            } catch { return null; }
         }
-        
-        function speakText() {
-            if(!generatedScript) return;
-            const utterance = new SpeechSynthesisUtterance(generatedScript);
-            utterance.lang = 'tr-TR';
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-            const voices = speechSynthesis.getVoices();
-            const trVoice = voices.find(v => v.lang.includes('tr'));
-            if(trVoice) utterance.voice = trVoice;
-            speechSynthesis.speak(utterance);
+
+        function createFinalImage(baseImageUrl, cta, topic) {
+            const canvas = document.getElementById('finalCanvas');
+            const ctx = canvas.getContext('2d');
+            const cat = CATEGORIES[selectedCategory];
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a1a2e');
+            gradient.addColorStop(1, '#16213e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Load and draw AI image if available
+            if (baseImageUrl) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    // Draw image in center
+                    const imgSize = 400;
+                    const x = (canvas.width - imgSize) / 2;
+                    ctx.drawImage(img, x, 150, imgSize, imgSize);
+                    addTextOverlay(ctx, canvas, cta, topic, cat);
+                };
+                img.onerror = () => addTextOverlay(ctx, canvas, cta, topic, cat);
+                img.src = baseImageUrl;
+            } else {
+                // No image, just text
+                addTextOverlay(ctx, canvas, cta, topic, cat);
+            }
         }
-        
+
+        function addTextOverlay(ctx, canvas, cta, topic, cat) {
+            // Top badge
+            ctx.fillStyle = cat.color;
+            roundRect(ctx, 20, 20, 200, 35, 17);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 14px -apple-system';
+            ctx.fillText(cat.name.toUpperCase(), 35, 43);
+
+            // Topic text at top
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 28px -apple-system';
+            wrapText(ctx, topic, 30, 100, canvas.width - 60, 35);
+
+            // CTA at bottom
+            const ctaY = canvas.height - 120;
+            ctx.fillStyle = cat.color;
+            roundRect(ctx, 30, ctaY, canvas.width - 60, 80, 15);
+            ctx.fill();
+
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 24px -apple-system';
+            ctx.textAlign = 'center';
+            ctx.fillText(cta, canvas.width / 2, ctaY + 50);
+            ctx.textAlign = 'left';
+
+            // Footer
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '12px -apple-system';
+            ctx.fillText('📱 Takip Et • Kaydet • Paylaş', 30, canvas.height - 20);
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                if (ctx.measureText(testLine).width > maxWidth && n > 0) {
+                    ctx.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, y);
+        }
+
+        function speakScript() {
+            if (!currentScript) return;
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(currentScript);
+            u.lang = 'tr-TR';
+            u.rate = parseFloat(document.getElementById('speedRange').value);
+            u.pitch = 1.0;
+            speechSynthesis.speak(u);
+        }
+
         function stopSpeech() { speechSynthesis.cancel(); }
-        
+
+        function copyScript() {
+            navigator.clipboard.writeText(currentScript + '\n\n' + currentCTA);
+            alert('✅ Kopyalandı!');
+        }
+
+        function downloadImage() {
+            const canvas = document.getElementById('finalCanvas');
+            const link = document.createElement('a');
+            link.download = `reel_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
         async function runWorkflow() {
-            const token = getToken();
-            if(!token) { alert('⚠️ Token girin!'); toggleConfig(); return; }
-            
+            if (!getToken()) { alert('⚠️ Token girin!'); toggleConfig(); return; }
+
             const btn = document.getElementById('startBtn');
-            const stepsPanel = document.getElementById('stepsPanel');
-            const outputBox = document.getElementById('outputBox');
-            const outputContent = document.getElementById('outputContent');
-            const mediaBox = document.getElementById('mediaBox');
-            
+            const cat = CATEGORIES[selectedCategory];
+
             btn.disabled = true;
-            btn.textContent = '⏳ Üretiliyor...';
-            stepsPanel.style.display = 'block';
-            outputBox.style.display = 'none';
-            mediaBox.style.display = 'none';
-            outputContent.innerHTML = '';
-            generatedScript = '';
-            
-            const STEPS = getSteps(selectedCategory);
-            STEPS.forEach(s => document.getElementById(s.id).className = 'step');
-            
-            let prev = '', html = '', imgPrompt = '';
-            
-            for(let i = 0; i < STEPS.length; i++) {
-                const step = STEPS[i];
-                document.getElementById(step.id).className = 'step active';
-                
-                try {
-                    const prompt = step.prompt.replace('{PREV}', prev);
-                    const result = await callAI(prompt);
-                    prev = result;
-                    document.getElementById(step.id).className = 'step done';
-                    
-                    if(step.id === 's4') generatedScript = result;
-                    if(step.id === 's5') imgPrompt = result;
-                    
-                    html += `<div class="content-card"><h4>${step.title}</h4><p>${result}</p></div>`;
-                } catch(e) {
-                    document.getElementById(step.id).className = 'step';
-                    html += `<div class="content-card"><h4>${step.title}</h4><p style="color:#e74c3c">Hata: ${e.message}</p></div>`;
-                    break;
-                }
-                await new Promise(r => setTimeout(r, 1500));
-            }
-            
-            // Generate image
-            if(imgPrompt) {
+            btn.textContent = '⏳ Oluşturuluyor...';
+            document.getElementById('stepsPanel').style.display = 'block';
+            document.getElementById('outputBox').style.display = 'none';
+            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).className = 'step');
+
+            try {
+                // STEP 1: Trending topic
+                document.getElementById('s1').className = 'step active';
+                const topicPrompt = `Sen ${cat.name} uzmanısın. 2025'te Türkiye'de ${cat.topic} hakkında EN popüler konuyu bul. Sadece kısa başlık yaz (max 8 kelime). Örnek: "Kış aylarında saç dökülmesi nasıl önlenir"`;
+                let topic = await callAI(topicPrompt);
+                topic = topic.replace(/[\*\#\"]/g, '').trim().substring(0, 60);
+                document.getElementById('s1').className = 'step done';
+                await sleep(800);
+
+                // STEP 2: Speech script (CLEAN, no instructions)
+                document.getElementById('s2').className = 'step active';
+                const scriptPrompt = `"${topic}" konusu için 25 saniyelik KONUŞMA METNİ yaz.
+
+KURALLAR:
+- SADECE söylenecek cümleleri yaz
+- Parantez, emoji, "Hook", "CTA" gibi terimler KULLANMA
+- Saniye bilgisi YAZMA
+- Doğal, samimi konuşma dili
+- Soru ile başla
+- 3-4 ipucu ver
+- Takip et ile bitir
+
+ÖRNEK:
+Saçların sürekli dökülüyor mu? Sana üç basit çözüm vereceğim. Birincisi, saçını yıkarken ılık su kullan. İkincisi, haftada bir zeytinyağı maskesi uygula. Üçüncüsü, stres yönetimini öğren. Bu ipuçlarını uygularsan bir ay içinde farkı göreceksin. Daha fazla ipucu için takip et!
+
+Şimdi "${topic}" için yaz:`;
+                currentScript = await callAI(scriptPrompt);
+                currentScript = currentScript.replace(/[\*\#\[\]\(\)\"]/g, '').replace(/\d+-\d+\s*(sn|saniye)/gi, '').trim();
+                document.getElementById('s2').className = 'step done';
+                await sleep(800);
+
+                // STEP 3: Image + CTA
+                document.getElementById('s3').className = 'step active';
+
+                // Generate CTA
+                const ctaPrompt = `"${topic}" için kısa, güçlü bir CTA (Call to Action) yaz. Max 5 kelime. Örnekler: "Kaydet ve Uygula!", "Hemen Dene!", "Takip Et, Kaçırma!". Sadece CTA yaz:`;
+                currentCTA = await callAI(ctaPrompt);
+                currentCTA = currentCTA.replace(/[\*\#\"]/g, '').trim().substring(0, 30);
+
+                // Generate base image
+                const imgPrompt = `professional ${cat.topic} photography, modern aesthetic, clean minimal background, soft lighting, high quality, instagram style vertical 9:16`;
                 const imgUrl = await generateImage(imgPrompt);
-                if(imgUrl) {
-                    document.getElementById('generatedImage').src = imgUrl;
-                    mediaBox.style.display = 'block';
-                }
+
+                // Create final image with CTA overlay
+                createFinalImage(imgUrl, currentCTA, topic);
+
+                document.getElementById('s3').className = 'step done';
+                await sleep(500);
+
+                // STEP 4: Hashtags
+                document.getElementById('s4').className = 'step active';
+                const hashtagPrompt = `"${topic}" için 12 Türkçe Instagram hashtag yaz. Sadece hashtag'leri virgülle ayırarak yaz. Örnek: #saçbakımı, #güzellik, #ipucu`;
+                let hashtags = await callAI(hashtagPrompt);
+                hashtags = hashtags.match(/#[\wığüşöçİĞÜŞÖÇ]+/g) || [];
+                document.getElementById('s4').className = 'step done';
+
+                // Display results
+                document.getElementById('outputBox').style.display = 'block';
+                document.getElementById('scriptBox').textContent = currentScript;
+                document.getElementById('ctaText').textContent = '💪 CTA: ' + currentCTA;
+                document.getElementById('hashtagBox').innerHTML = hashtags.slice(0, 12).map(h => `<span class="hashtag">${h}</span>`).join('');
+                document.getElementById('bestTime').textContent = '🕐 En iyi paylaşım: 12:00-14:00 veya 19:00-21:00 (TR)';
+
+            } catch (e) {
+                alert('Hata: ' + e.message);
             }
-            
-            outputBox.style.display = 'block';
-            outputContent.innerHTML = html;
+
             btn.disabled = false;
             btn.textContent = '🔄 YENİ İÇERİK';
         }
-        
-        // Load voices
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
         speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
     </script>
 </body>
+
 </html>
