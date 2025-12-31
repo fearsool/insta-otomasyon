@@ -341,6 +341,40 @@
             border: 1px solid rgba(0, 184, 148, 0.3)
         }
 
+        /* Media Preview */
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px
+        }
+
+        .media-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center
+        }
+
+        .media-card h5 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #00b894
+        }
+
+        .media-card canvas {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 10px
+        }
+
+        .media-card video {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 10px;
+            background: #000
+        }
+
         /* Carousel Styles */
         .carousel-preview {
             display: grid;
@@ -404,6 +438,23 @@
             }
         }
 
+        /* Speed slider */
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px
+        }
+
+        .speed-control label {
+            font-size: 11px;
+            opacity: 0.7
+        }
+
+        .speed-control input {
+            flex: 1
+        }
+
         @media(max-width:600px) {
             .category-grid {
                 grid-template-columns: repeat(2, 1fr)
@@ -415,6 +466,10 @@
 
             .carousel-preview {
                 grid-template-columns: repeat(2, 1fr)
+            }
+
+            .media-grid {
+                grid-template-columns: 1fr
             }
         }
     </style>
@@ -471,20 +526,33 @@
             <div class="step" id="s2"><span class="step-icon">🎙️</span>Seslendirme Yazılıyor</div>
             <div class="step" id="s3"><span class="step-icon">🖼️</span>Görseller Oluşturuluyor</div>
             <div class="step" id="s4"><span class="step-icon">📝</span>Caption & Hashtag</div>
-            <div class="step" id="s5"><span class="step-icon">🔊</span>Ses Üretiliyor (AI)</div>
         </div>
 
         <div class="output-box" id="outputBox" style="display:none">
             <div class="question-box" id="questionBox"></div>
 
-            <!-- Reels Output -->
+            <!-- Reels Output with Video Preview -->
             <div id="reelsOutput">
-                <div class="content-section">
-                    <h4>🖼️ Görsel</h4>
-                    <canvas id="finalCanvas" width="540" height="960"
-                        style="width:100%;max-width:300px;border-radius:12px"></canvas>
-                    <div style="margin-top:10px">
-                        <button class="audio-btn download" onclick="downloadImage()">📥 Görsel İndir</button>
+                <div class="media-grid">
+                    <div class="media-card">
+                        <h5>🖼️ Görsel</h5>
+                        <canvas id="finalCanvas" width="540" height="960"></canvas>
+                        <div style="margin-top:10px">
+                            <button class="audio-btn download" onclick="downloadImage()">📥 İndir</button>
+                        </div>
+                    </div>
+                    <div class="media-card">
+                        <h5>🎬 Video Önizleme</h5>
+                        <video id="videoPreview" controls style="display:none"></video>
+                        <canvas id="videoCanvas" width="540" height="960" style="display:none"></canvas>
+                        <div id="videoPlaceholder"
+                            style="width:100%;max-width:280px;height:200px;background:rgba(0,0,0,0.5);border-radius:10px;display:flex;align-items:center;justify-content:center;margin:0 auto">
+                            <span style="opacity:0.5;font-size:12px">Sesle görsel birleştirilecek</span>
+                        </div>
+                        <div style="margin-top:10px">
+                            <button class="audio-btn" id="createVideoBtn" onclick="createVideoPreview()">🎬 Video
+                                Oluştur</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -495,7 +563,7 @@
                     <h4>📑 Carousel Slide'ları (7 adet)</h4>
                     <div class="carousel-preview" id="carouselPreview"></div>
                     <div class="carousel-actions">
-                        <button class="audio-btn download" onclick="downloadAllSlides()">📥 Tümünü İndir (ZIP)</button>
+                        <button class="audio-btn download" onclick="downloadAllSlides()">📥 Tümünü İndir</button>
                     </div>
                 </div>
             </div>
@@ -503,12 +571,14 @@
             <div class="content-section">
                 <h4>🔊 Seslendirme</h4>
                 <div class="audio-section">
-                    <button class="audio-btn" id="playTtsBtn" onclick="playTTS()">▶️ Dinle (AI Ses)</button>
-                    <button class="audio-btn stop" onclick="stopTTS()">⏹️ Durdur</button>
-                    <button class="audio-btn download" id="downloadAudioBtn" onclick="downloadAudio()" disabled>📥 MP3
-                        İndir</button>
+                    <button class="audio-btn" id="playBtn" onclick="speakScript()">▶️ Dinle</button>
+                    <button class="audio-btn stop" onclick="stopSpeech()">⏹️ Durdur</button>
                 </div>
-                <audio id="ttsAudio" style="display:none"></audio>
+                <div class="speed-control">
+                    <label>🐢 Hız:</label>
+                    <input type="range" id="speedRange" min="0.7" max="1.1" step="0.05" value="0.85">
+                    <label>🐇</label>
+                </div>
             </div>
 
             <div class="content-section">
@@ -532,15 +602,12 @@
 
     <script>
         const API = 'https://router.huggingface.co/v1/chat/completions';
-        const TTS_API = 'https://router.huggingface.co/hf-inference/models/facebook/mms-tts-tur';
-        const IMG_API = 'https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0';
 
         let selectedCategory = 'kuafor';
         let selectedFormat = 'reels';
         let currentScript = '';
         let currentQuestion = '';
         let currentCaption = '';
-        let currentAudioBlob = null;
         let carouselSlides = [];
 
         // Category selection
@@ -629,26 +696,29 @@
             return data.choices?.[0]?.message?.content || '';
         }
 
-        async function generateTTS(text) {
-            const res = await fetch(TTS_API, {
-                method: 'POST',
-                headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ inputs: text })
-            });
-            if (!res.ok) throw new Error('TTS hatası');
-            return await res.blob();
-        }
-
         async function generateImage(prompt) {
-            try {
-                const res = await fetch(IMG_API, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inputs: prompt + ', high quality, no text, no letters' })
-                });
-                if (!res.ok) return null;
-                return URL.createObjectURL(await res.blob());
-            } catch { return null; }
+            // Try multiple image APIs
+            const models = [
+                'black-forest-labs/FLUX.1-schnell',
+                'stabilityai/stable-diffusion-3.5-large',
+                'ByteDance/SDXL-Lightning'
+            ];
+
+            for (const model of models) {
+                try {
+                    const res = await fetch(`https://router.huggingface.co/hf-inference/models/${model}`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ inputs: prompt + ', high quality, no text, no letters, professional' })
+                    });
+                    if (res.ok) {
+                        return URL.createObjectURL(await res.blob());
+                    }
+                } catch (e) {
+                    console.log(`${model} failed, trying next...`);
+                }
+            }
+            return null;
         }
 
         function cleanForTTS(text) {
@@ -661,6 +731,25 @@
                 .replace(/\n{3,}/g, '\n\n')
                 .trim();
         }
+
+        // ============ SPEECH (Web Speech API) ============
+        function speakScript() {
+            if (!currentScript) return;
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(currentScript);
+            u.lang = 'tr-TR';
+            u.rate = parseFloat(document.getElementById('speedRange').value);
+            u.pitch = 1.0;
+
+            // Try to find Turkish voice
+            const voices = speechSynthesis.getVoices();
+            const turkishVoice = voices.find(v => v.lang.includes('tr'));
+            if (turkishVoice) u.voice = turkishVoice;
+
+            speechSynthesis.speak(u);
+        }
+
+        function stopSpeech() { speechSynthesis.cancel(); }
 
         // ============ CANVAS DRAWING ============
         function createReelsImage(baseImageUrl, question, cat) {
@@ -735,6 +824,22 @@
             ctx.fillStyle = 'rgba(255,255,255,0.8)';
             ctx.fillText('💾 Kaydet  •  👆 Takip Et', canvas.width / 2, canvas.height - 35);
             ctx.textAlign = 'left';
+        }
+
+        // ============ VIDEO PREVIEW ============
+        function createVideoPreview() {
+            const canvas = document.getElementById('finalCanvas');
+            const video = document.getElementById('videoPreview');
+            const placeholder = document.getElementById('videoPlaceholder');
+
+            // Create a simple video-like preview using the canvas
+            placeholder.style.display = 'none';
+
+            // Start TTS and show animation
+            speakScript();
+
+            // Show message that this is a preview
+            alert('🎬 Video önizlemesi: Görsel + Seslendirme beraber oynatılıyor.\n\nGerçek video için CapCut veya InShot kullanabilirsin!');
         }
 
         // ============ CAROUSEL SLIDES ============
@@ -906,28 +1011,6 @@
             ctx.fillText(line.trim(), x, y);
         }
 
-        // ============ AUDIO FUNCTIONS ============
-        function playTTS() {
-            const audio = document.getElementById('ttsAudio');
-            if (audio.src) {
-                audio.play();
-            }
-        }
-
-        function stopTTS() {
-            const audio = document.getElementById('ttsAudio');
-            audio.pause();
-            audio.currentTime = 0;
-        }
-
-        function downloadAudio() {
-            if (!currentAudioBlob) return;
-            const link = document.createElement('a');
-            link.download = `seslendirme_${Date.now()}.wav`;
-            link.href = URL.createObjectURL(currentAudioBlob);
-            link.click();
-        }
-
         function copyScript() { navigator.clipboard.writeText(currentScript); alert('✅ Kopyalandı!'); }
         function copyCaption() {
             const hashtags = document.getElementById('hashtagBox').textContent;
@@ -952,7 +1035,6 @@
         }
 
         async function downloadAllSlides() {
-            // Simple sequential download
             for (let i = 0; i < carouselSlides.length; i++) {
                 downloadSlide(i);
                 await sleep(500);
@@ -970,7 +1052,7 @@
             btn.innerHTML = '<span class="loading"></span>Oluşturuluyor...';
             document.getElementById('stepsPanel').style.display = 'block';
             document.getElementById('outputBox').style.display = 'none';
-            ['s1', 's2', 's3', 's4', 's5'].forEach(id => document.getElementById(id).className = 'step');
+            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).className = 'step');
 
             try {
                 // STEP 1: Find viral question
@@ -1024,6 +1106,7 @@ KURALLAR: Emoji YOK, madde YOK, sayı YOK, sadece ses için`;
                     createReelsImage(imgUrl, currentQuestion, cat);
                     document.getElementById('reelsOutput').style.display = 'block';
                     document.getElementById('carouselOutput').style.display = 'none';
+                    document.getElementById('videoPlaceholder').style.display = 'flex';
                 } else {
                     // Generate tips for carousel
                     const tipsPrompt = `"${currentQuestion}" için 5 kısa ipucu yaz.
@@ -1054,19 +1137,6 @@ FORMAT:
                 let hashtags = await callAI(hashtagPrompt);
                 hashtags = hashtags.match(/#[\wığüşöçİĞÜŞÖÇ]+/g) || [];
                 document.getElementById('s4').className = 'step done';
-                await sleep(500);
-
-                // STEP 5: Generate TTS Audio
-                document.getElementById('s5').className = 'step active';
-                try {
-                    currentAudioBlob = await generateTTS(currentScript);
-                    const audioUrl = URL.createObjectURL(currentAudioBlob);
-                    document.getElementById('ttsAudio').src = audioUrl;
-                    document.getElementById('downloadAudioBtn').disabled = false;
-                } catch (e) {
-                    console.log('TTS error, using fallback');
-                }
-                document.getElementById('s5').className = 'step done';
 
                 // Display results
                 document.getElementById('outputBox').style.display = 'block';
@@ -1084,6 +1154,7 @@ FORMAT:
         }
 
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
     </script>
 </body>
 
