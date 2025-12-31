@@ -36,6 +36,7 @@
             font-size: 28px;
             background: linear-gradient(90deg, #00b894, #00cec9, #74b9ff);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 8px
         }
@@ -1108,11 +1109,18 @@ KURALLAR: Emoji YOK, madde YOK, sayı YOK, sadece ses için`;
                     document.getElementById('carouselOutput').style.display = 'none';
                     document.getElementById('videoPlaceholder').style.display = 'flex';
                 } else {
-                    // Generate tips for carousel
-                    const tipsPrompt = `"${currentQuestion}" için 5 kısa ipucu yaz.
-Her ipucu 1 cümle olsun. Sadece ipuçlarını yaz, numara olmadan.`;
-                    const tipsRaw = await callAI(tipsPrompt);
-                    const tips = tipsRaw.split('\n').filter(t => t.trim().length > 10).slice(0, 5);
+                    // Generate professional carousel content
+                    const carouselPrompt = `"${currentQuestion}" için profesyonel Instagram CAROUSEL içeriği oluştur.
+
+FORMAT:
+Slide 1 (Kapak): Dikkat çekici giriş cümlesi + istatistik veya şok edici bilgi
+Slide 2-5: Her biri 1 pratik ipucu (kısa, net, uygulanabilir)
+Slide 6: Özet + CTA
+
+Her slide için sadece 1-2 cümle yaz. Emoji kullan.
+Sadece slide içeriklerini yaz, "Slide 1:" gibi etiketlerle.`;
+                    const carouselRaw = await callAI(carouselPrompt);
+                    const tips = carouselRaw.split('\n').filter(t => t.trim().length > 10).slice(0, 6);
                     await createCarouselSlides(currentQuestion, tips, cat);
                     document.getElementById('reelsOutput').style.display = 'none';
                     document.getElementById('carouselOutput').style.display = 'block';
@@ -1122,13 +1130,32 @@ Her ipucu 1 cümle olsun. Sadece ipuçlarını yaz, numara olmadan.`;
 
                 // STEP 4: Caption + Hashtags
                 document.getElementById('s4').className = 'step active';
-                const captionPrompt = `"${currentQuestion}" için Instagram AÇIKLAMASI yaz.
+                const captionPrompt = `"${currentQuestion}" için profesyonel Instagram CAPTION yaz.
 
-CEVABI İÇERMELİ!
 FORMAT:
-1. Kısa giriş
-2. 5 maddelik cevap (👉 ile)
-3. "💾 Kaydetmeden geçme!" ile bitir`;
+1. Dikkat çekici giriş (emoji ile başla, soru veya şok edici bilgi)
+2. Kısa açıklama (1-2 cümle)
+3. 3-5 maddelik ipucu listesi (her biri emoji ile başlasın: 💡 ✨ 🔥 💪 🎯)
+4. CTA: "💾 Kaydet, lazım olacak!" veya "👉 Yorumlarda fikrini paylaş!"
+5. Soru: Takipçilere bir soru sor
+
+ÖRNEK TARZ:
+"😱 ${cat.name} konusunda herkesin yaptığı 3 hata!
+
+Bu hataları yapıyorsan saçın zarar görüyor olabilir...
+
+💡 İpucu 1: ...
+✨ İpucu 2: ...
+🔥 İpucu 3: ...
+
+💾 Kaydet, lazım olacak!
+
+Sen hangisini yapıyordun? Yorumlarda yaz! 👇"
+
+KURALLAR:
+- Samimi ve enerjik ton
+- Profesyonel ama arkadaşça
+- Emoji'leri dengeli kullan`;
 
                 currentCaption = await callAI(captionPrompt);
                 currentCaption = currentCaption.replace(/[\*\#\"]/g, '').trim();
