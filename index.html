@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 MEGA Content Creator</title>
+    <title>🎬 Viral Content Creator</title>
     <style>
         * {
             margin: 0;
@@ -278,6 +278,15 @@
             font-size: 11px
         }
 
+        .question-box {
+            background: rgba(0, 184, 148, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: center
+        }
+
         @media(max-width:600px) {
             .category-grid {
                 grid-template-columns: repeat(2, 1fr)
@@ -295,7 +304,7 @@
         <div class="header">
             <span class="badge">🤖 FULL AUTOMATION 2025</span>
             <h1>🎬 Viral Content Creator</h1>
-            <p style="opacity:0.6;font-size:12px">Görsel + Ses + SEO = Hazır İçerik</p>
+            <p style="opacity:0.6;font-size:12px">Soru + Cevap + Görsel + Ses = Viral İçerik</p>
         </div>
 
         <div class="panel">
@@ -328,17 +337,19 @@
         </div>
 
         <div class="panel" id="stepsPanel" style="display:none">
-            <div class="step" id="s1"><span class="step-icon">🔍</span>Trend Konu Bulunuyor</div>
-            <div class="step" id="s2"><span class="step-icon">📝</span>Konuşma Metni Yazılıyor</div>
-            <div class="step" id="s3"><span class="step-icon">🖼️</span>Görsel + CTA Oluşturuluyor</div>
+            <div class="step" id="s1"><span class="step-icon">❓</span>Trend Soru Bulunuyor</div>
+            <div class="step" id="s2"><span class="step-icon">�</span>Cevap Yazılıyor</div>
+            <div class="step" id="s3"><span class="step-icon">🖼️</span>Görsel Oluşturuluyor</div>
             <div class="step" id="s4"><span class="step-icon">🏷️</span>SEO & Hashtag</div>
         </div>
 
         <div class="output-box" id="outputBox" style="display:none">
 
+            <div class="question-box" id="questionBox"></div>
+
             <div class="media-section">
                 <div class="media-card">
-                    <h5>🖼️ Görsel + CTA</h5>
+                    <h5>🖼️ Görsel (Soru + CTA)</h5>
                     <canvas id="finalCanvas" width="540" height="960"></canvas>
                     <button class="audio-btn download" onclick="downloadImage()">📥 Görseli İndir</button>
                 </div>
@@ -349,21 +360,20 @@
                     <p style="font-size:10px;opacity:0.5;margin-top:8px">Doğal Türkçe ses</p>
                     <div style="margin-top:10px">
                         <label style="font-size:10px">Hız:</label>
-                        <input type="range" id="speedRange" min="0.5" max="1.2" step="0.1" value="0.9"
+                        <input type="range" id="speedRange" min="0.6" max="1.1" step="0.1" value="0.85"
                             style="width:80%">
                     </div>
                 </div>
             </div>
 
             <div class="content-section">
-                <h4>📢 Konuşma Metni</h4>
+                <h4>📢 Konuşma Metni (Seslendirme)</h4>
                 <div class="script-box" id="scriptBox"></div>
                 <button class="copy-btn" onclick="copyScript()">📋 Kopyala</button>
             </div>
 
             <div class="content-section">
-                <h4>🏷️ CTA & Hashtags</h4>
-                <p id="ctaText" style="font-size:14px;margin-bottom:10px;color:#00b894"></p>
+                <h4>🏷️ Hashtags</h4>
                 <div class="hashtags" id="hashtagBox"></div>
                 <p id="bestTime" style="font-size:11px;margin-top:10px;opacity:0.7"></p>
             </div>
@@ -374,7 +384,7 @@
         const API = 'https://router.huggingface.co/v1/chat/completions';
         let selectedCategory = 'kuafor';
         let currentScript = '';
-        let currentCTA = '';
+        let currentQuestion = '';
 
         document.querySelectorAll('.cat-btn').forEach(btn => {
             btn.onclick = () => {
@@ -390,14 +400,54 @@
         window.onload = () => { if (getToken()) document.getElementById('tokenInput').value = getToken(); }
 
         const CATEGORIES = {
-            kuafor: { name: 'Saç Bakımı', topic: 'saç bakımı, saç sağlığı', color: '#e84393' },
-            ai: { name: 'Yapay Zeka', topic: 'AI, ChatGPT, yapay zeka araçları', color: '#0984e3' },
-            bilim: { name: 'Bilim', topic: 'bilimsel keşifler, uzay, teknoloji', color: '#6c5ce7' },
-            fitness: { name: 'Fitness', topic: 'egzersiz, spor, sağlık', color: '#00b894' },
-            finans: { name: 'Finans', topic: 'para yönetimi, yatırım', color: '#fdcb6e' },
-            yemek: { name: 'Yemek', topic: 'tarifler, mutfak ipuçları', color: '#e17055' },
-            sanat: { name: 'Sanat', topic: 'tasarım, yaratıcılık', color: '#fd79a8' },
-            gelisim: { name: 'Kişisel Gelişim', topic: 'motivasyon, üretkenlik', color: '#00cec9' }
+            kuafor: {
+                name: 'Saç Bakımı',
+                color: '#e84393',
+                questionPrompt: 'saç bakımı, saç sağlığı konusunda insanların Google\'da en çok aradığı SORU nedir? Örnek sorular: "Ombre saçta bakım nasıl yapılır?", "Kış aylarında saç dökülmesi nasıl önlenir?", "Boyalı saçlar için en iyi bakım maskesi nedir?"',
+                imagePrompt: 'beautiful healthy shiny hair, hair salon, professional hair styling, modern aesthetic, soft lighting, no text'
+            },
+            ai: {
+                name: 'Yapay Zeka',
+                color: '#0984e3',
+                questionPrompt: 'yapay zeka, AI araçları konusunda insanların merak ettiği güncel SORU nedir? Örnek: "ChatGPT 5 ne zaman çıkacak?", "2025\'te en iyi ücretsiz AI araçları hangileri?", "AI ile para nasıl kazanılır?"',
+                imagePrompt: 'futuristic AI technology, neural network visualization, modern tech aesthetic, blue neon lights, no text'
+            },
+            bilim: {
+                name: 'Bilim',
+                color: '#6c5ce7',
+                questionPrompt: 'bilim, uzay, teknoloji konusunda insanların merak ettiği ilginç SORU nedir? Örnek: "Mars\'ta yaşam var mı?", "Kuantum bilgisayar nedir?", "Beyin nasıl çalışır?"',
+                imagePrompt: 'science laboratory, space exploration, scientific discovery, modern aesthetic, no text'
+            },
+            fitness: {
+                name: 'Fitness',
+                color: '#00b894',
+                questionPrompt: 'fitness, egzersiz, sağlıklı yaşam konusunda en çok sorulan SORU nedir? Örnek: "Evde karın kası nasıl yapılır?", "Kilo vermek için en etkili egzersiz nedir?", "Protein tozu zararlı mı?"',
+                imagePrompt: 'fitness workout, healthy lifestyle, gym training, athletic body, modern aesthetic, no text'
+            },
+            finans: {
+                name: 'Finans',
+                color: '#fdcb6e',
+                questionPrompt: 'para yönetimi, yatırım, tasarruf konusunda en çok sorulan SORU nedir? Örnek: "2025\'te neye yatırım yapmalı?", "Pasif gelir nasıl elde edilir?", "Kripto para güvenilir mi?"',
+                imagePrompt: 'financial success, money management, investment growth, modern business aesthetic, no text'
+            },
+            yemek: {
+                name: 'Yemek',
+                color: '#e17055',
+                questionPrompt: 'yemek tarifleri, mutfak konusunda en çok aranan SORU nedir? Örnek: "En kolay tatlı tarifi nedir?", "Pratik akşam yemeği önerileri?", "Yumurtasız kek nasıl yapılır?"',
+                imagePrompt: 'delicious food photography, gourmet cooking, beautiful meal presentation, modern aesthetic, no text'
+            },
+            sanat: {
+                name: 'Sanat',
+                color: '#fd79a8',
+                questionPrompt: 'sanat, tasarım, yaratıcılık konusunda merak edilen SORU nedir? Örnek: "Dijital sanat nasıl yapılır?", "2025 tasarım trendleri neler?", "Resim yapmayı nasıl öğrenebilirim?"',
+                imagePrompt: 'creative art design, artistic inspiration, colorful abstract art, modern aesthetic, no text'
+            },
+            gelisim: {
+                name: 'Kişisel Gelişim',
+                color: '#00cec9',
+                questionPrompt: 'kişisel gelişim, motivasyon, üretkenlik konusunda en çok sorulan SORU nedir? Örnek: "Sabah rutini nasıl oluşturulur?", "Prokrastinasyonu nasıl yenerim?", "Özgüven nasıl arttırılır?"',
+                imagePrompt: 'personal growth motivation, success mindset, inspirational lifestyle, modern aesthetic, no text'
+            }
         };
 
         async function callAI(prompt) {
@@ -423,10 +473,9 @@
             } catch { return null; }
         }
 
-        function createFinalImage(baseImageUrl, cta, topic) {
+        function createFinalImage(baseImageUrl, question, cta, cat) {
             const canvas = document.getElementById('finalCanvas');
             const ctx = canvas.getContext('2d');
-            const cat = CATEGORIES[selectedCategory];
 
             // Gradient background
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -435,55 +484,58 @@
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Load and draw AI image if available
             if (baseImageUrl) {
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = () => {
-                    // Draw image in center
-                    const imgSize = 400;
-                    const x = (canvas.width - imgSize) / 2;
-                    ctx.drawImage(img, x, 150, imgSize, imgSize);
-                    addTextOverlay(ctx, canvas, cta, topic, cat);
+                    // Draw image centered
+                    const aspectRatio = img.width / img.height;
+                    let drawWidth = canvas.width - 40;
+                    let drawHeight = drawWidth / aspectRatio;
+                    if (drawHeight > 450) { drawHeight = 450; drawWidth = drawHeight * aspectRatio; }
+                    const x = (canvas.width - drawWidth) / 2;
+                    ctx.drawImage(img, x, 200, drawWidth, drawHeight);
+                    addOverlays(ctx, canvas, question, cta, cat);
                 };
-                img.onerror = () => addTextOverlay(ctx, canvas, cta, topic, cat);
+                img.onerror = () => addOverlays(ctx, canvas, question, cta, cat);
                 img.src = baseImageUrl;
             } else {
-                // No image, just text
-                addTextOverlay(ctx, canvas, cta, topic, cat);
+                addOverlays(ctx, canvas, question, cta, cat);
             }
         }
 
-        function addTextOverlay(ctx, canvas, cta, topic, cat) {
-            // Top badge
+        function addOverlays(ctx, canvas, question, cta, cat) {
+            // Category badge
             ctx.fillStyle = cat.color;
-            roundRect(ctx, 20, 20, 200, 35, 17);
+            roundRect(ctx, 20, 20, 180, 32, 16);
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 14px -apple-system';
-            ctx.fillText(cat.name.toUpperCase(), 35, 43);
+            ctx.font = 'bold 13px Arial';
+            ctx.fillText('❓ ' + cat.name.toUpperCase(), 35, 42);
 
-            // Topic text at top
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 28px -apple-system';
-            wrapText(ctx, topic, 30, 100, canvas.width - 60, 35);
-
-            // CTA at bottom
-            const ctaY = canvas.height - 120;
-            ctx.fillStyle = cat.color;
-            roundRect(ctx, 30, ctaY, canvas.width - 60, 80, 15);
+            // QUESTION at top
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            roundRect(ctx, 20, 70, canvas.width - 40, 100, 12);
             ctx.fill();
-
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 24px -apple-system';
+            ctx.font = 'bold 22px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(cta, canvas.width / 2, ctaY + 50);
+            wrapText(ctx, question, canvas.width / 2, 110, canvas.width - 60, 28);
             ctx.textAlign = 'left';
 
+            // CTA at bottom
+            ctx.fillStyle = cat.color;
+            roundRect(ctx, 30, canvas.height - 150, canvas.width - 60, 70, 12);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 22px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(cta, canvas.width / 2, canvas.height - 105);
+
             // Footer
-            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-            ctx.font = '12px -apple-system';
-            ctx.fillText('📱 Takip Et • Kaydet • Paylaş', 30, canvas.height - 20);
+            ctx.font = '14px Arial';
+            ctx.fillText('� Kaydet  •  👆 Takip Et  •  📤 Paylaş', canvas.width / 2, canvas.height - 30);
+            ctx.textAlign = 'left';
         }
 
         function roundRect(ctx, x, y, w, h, r) {
@@ -506,14 +558,14 @@
             for (let n = 0; n < words.length; n++) {
                 const testLine = line + words[n] + ' ';
                 if (ctx.measureText(testLine).width > maxWidth && n > 0) {
-                    ctx.fillText(line, x, y);
+                    ctx.fillText(line.trim(), x, y);
                     line = words[n] + ' ';
                     y += lineHeight;
                 } else {
                     line = testLine;
                 }
             }
-            ctx.fillText(line, x, y);
+            ctx.fillText(line.trim(), x, y);
         }
 
         function speakScript() {
@@ -529,14 +581,14 @@
         function stopSpeech() { speechSynthesis.cancel(); }
 
         function copyScript() {
-            navigator.clipboard.writeText(currentScript + '\n\n' + currentCTA);
+            navigator.clipboard.writeText('❓ ' + currentQuestion + '\n\n' + currentScript);
             alert('✅ Kopyalandı!');
         }
 
         function downloadImage() {
             const canvas = document.getElementById('finalCanvas');
             const link = document.createElement('a');
-            link.download = `reel_${Date.now()}.png`;
+            link.download = `viral_${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
@@ -554,66 +606,65 @@
             ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).className = 'step');
 
             try {
-                // STEP 1: Trending topic
+                // STEP 1: Find trending QUESTION
                 document.getElementById('s1').className = 'step active';
-                const topicPrompt = `Sen ${cat.name} uzmanısın. 2025'te Türkiye'de ${cat.topic} hakkında EN popüler konuyu bul. Sadece kısa başlık yaz (max 8 kelime). Örnek: "Kış aylarında saç dökülmesi nasıl önlenir"`;
-                let topic = await callAI(topicPrompt);
-                topic = topic.replace(/[\*\#\"]/g, '').trim().substring(0, 60);
+                const qPrompt = `Sen ${cat.name} uzmanısın. ${cat.questionPrompt}
+
+Sadece 1 soru yaz. Soru işareti ile bitir. Başka açıklama yapma.`;
+                currentQuestion = await callAI(qPrompt);
+                currentQuestion = currentQuestion.replace(/[\*\#\"]/g, '').trim();
+                if (!currentQuestion.endsWith('?')) currentQuestion += '?';
                 document.getElementById('s1').className = 'step done';
                 await sleep(800);
 
-                // STEP 2: Speech script (CLEAN, no instructions)
+                // STEP 2: Write ANSWER as speech (NO INSTRUCTIONS)
                 document.getElementById('s2').className = 'step active';
-                const scriptPrompt = `"${topic}" konusu için 25 saniyelik KONUŞMA METNİ yaz.
+                const answerPrompt = `Bu soruyu cevapla: "${currentQuestion}"
 
 KURALLAR:
-- SADECE söylenecek cümleleri yaz
-- Parantez, emoji, "Hook", "CTA" gibi terimler KULLANMA
-- Saniye bilgisi YAZMA
-- Doğal, samimi konuşma dili
-- Soru ile başla
-- 3-4 ipucu ver
-- Takip et ile bitir
+- Doğrudan cevap ver, yönergeler yazma
+- "Hook", "CTA", saniye bilgisi, parantez KULLANMA
+- Doğal konuşma dili kullan
+- 4-5 cümle ile özet bilgi ver
+- Samimi ve öğretici ol
+- "Takip et" ile bitir
 
-ÖRNEK:
-Saçların sürekli dökülüyor mu? Sana üç basit çözüm vereceğim. Birincisi, saçını yıkarken ılık su kullan. İkincisi, haftada bir zeytinyağı maskesi uygula. Üçüncüsü, stres yönetimini öğren. Bu ipuçlarını uygularsan bir ay içinde farkı göreceksin. Daha fazla ipucu için takip et!
+KÖTÜ ÖRNEK (YAPMA):
+"Hook (0-3sn): Soru sor..."
 
-Şimdi "${topic}" için yaz:`;
-                currentScript = await callAI(scriptPrompt);
-                currentScript = currentScript.replace(/[\*\#\[\]\(\)\"]/g, '').replace(/\d+-\d+\s*(sn|saniye)/gi, '').trim();
+İYİ ÖRNEK:
+"Bu sorunun cevabı aslında çok basit. Birincisi şunu yapmalısın. İkincisi buna dikkat et. Üçüncüsü bundan kaçın. Bu ipuçlarını uygularsan farkı göreceksin. Daha fazlası için takip et!"
+
+Şimdi "${currentQuestion}" sorusunu cevapla:`;
+                currentScript = await callAI(answerPrompt);
+                currentScript = currentScript
+                    .replace(/[\*\#\[\]\(\)\"]/g, '')
+                    .replace(/\d+-\d+\s*(sn|saniye)/gi, '')
+                    .replace(/Hook|CTA|İçerik|Görüntü|Ses|Kamera/gi, '')
+                    .trim();
                 document.getElementById('s2').className = 'step done';
                 await sleep(800);
 
-                // STEP 3: Image + CTA
+                // STEP 3: Generate image with question + CTA
                 document.getElementById('s3').className = 'step active';
-
-                // Generate CTA
-                const ctaPrompt = `"${topic}" için kısa, güçlü bir CTA (Call to Action) yaz. Max 5 kelime. Örnekler: "Kaydet ve Uygula!", "Hemen Dene!", "Takip Et, Kaçırma!". Sadece CTA yaz:`;
-                currentCTA = await callAI(ctaPrompt);
-                currentCTA = currentCTA.replace(/[\*\#\"]/g, '').trim().substring(0, 30);
-
-                // Generate base image
-                const imgPrompt = `professional ${cat.topic} photography, modern aesthetic, clean minimal background, soft lighting, high quality, instagram style vertical 9:16`;
-                const imgUrl = await generateImage(imgPrompt);
-
-                // Create final image with CTA overlay
-                createFinalImage(imgUrl, currentCTA, topic);
-
+                const imgUrl = await generateImage(cat.imagePrompt + ', high quality, instagram reels style');
+                const cta = '💡 Cevabı Öğrenmek İçin Kaydet!';
+                createFinalImage(imgUrl, currentQuestion, cta, cat);
                 document.getElementById('s3').className = 'step done';
                 await sleep(500);
 
                 // STEP 4: Hashtags
                 document.getElementById('s4').className = 'step active';
-                const hashtagPrompt = `"${topic}" için 12 Türkçe Instagram hashtag yaz. Sadece hashtag'leri virgülle ayırarak yaz. Örnek: #saçbakımı, #güzellik, #ipucu`;
+                const hashtagPrompt = `"${currentQuestion}" için 10 Türkçe Instagram hashtag yaz. Sadece hashtag'leri yaz, virgülle ayır.`;
                 let hashtags = await callAI(hashtagPrompt);
                 hashtags = hashtags.match(/#[\wığüşöçİĞÜŞÖÇ]+/g) || [];
                 document.getElementById('s4').className = 'step done';
 
                 // Display results
                 document.getElementById('outputBox').style.display = 'block';
+                document.getElementById('questionBox').innerHTML = '❓ <strong>' + currentQuestion + '</strong>';
                 document.getElementById('scriptBox').textContent = currentScript;
-                document.getElementById('ctaText').textContent = '💪 CTA: ' + currentCTA;
-                document.getElementById('hashtagBox').innerHTML = hashtags.slice(0, 12).map(h => `<span class="hashtag">${h}</span>`).join('');
+                document.getElementById('hashtagBox').innerHTML = hashtags.slice(0, 10).map(h => `<span class="hashtag">${h}</span>`).join('');
                 document.getElementById('bestTime').textContent = '🕐 En iyi paylaşım: 12:00-14:00 veya 19:00-21:00 (TR)';
 
             } catch (e) {
