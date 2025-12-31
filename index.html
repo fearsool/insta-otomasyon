@@ -53,7 +53,7 @@
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             margin-bottom: 15px
         }
@@ -253,6 +253,16 @@
             white-space: pre-wrap
         }
 
+        .caption-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #fff;
+            white-space: pre-wrap
+        }
+
         .copy-btn {
             padding: 8px 15px;
             background: #6c5ce7;
@@ -261,7 +271,8 @@
             color: #fff;
             cursor: pointer;
             font-size: 11px;
-            margin-top: 8px
+            margin-top: 8px;
+            margin-right: 5px
         }
 
         .hashtags {
@@ -280,10 +291,10 @@
 
         .question-box {
             background: rgba(0, 184, 148, 0.15);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             margin-bottom: 10px;
-            font-size: 14px;
+            font-size: 15px;
             text-align: center
         }
 
@@ -304,7 +315,7 @@
         <div class="header">
             <span class="badge">🤖 FULL AUTOMATION 2025</span>
             <h1>🎬 Viral Content Creator</h1>
-            <p style="opacity:0.6;font-size:12px">Soru + Cevap + Görsel + Ses = Viral İçerik</p>
+            <p style="opacity:0.6;font-size:12px">Soru + Ses + Görsel + Caption = Viral Reels</p>
         </div>
 
         <div class="panel">
@@ -318,6 +329,7 @@
                 <button class="cat-btn" data-cat="yemek"><span class="icon">🍳</span>Yemek</button>
                 <button class="cat-btn" data-cat="sanat"><span class="icon">🎨</span>Sanat</button>
                 <button class="cat-btn" data-cat="gelisim"><span class="icon">🧘</span>Gelişim</button>
+                <button class="cat-btn" data-cat="gizlitarih"><span class="icon">🗿</span>Gizli Tarih</button>
             </div>
         </div>
 
@@ -333,14 +345,14 @@
                     style="padding:6px 12px;background:#00b894;border:none;border-radius:5px;color:#fff;cursor:pointer;font-size:11px">💾
                     Kaydet</button>
             </div>
-            <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 İÇERİK OLUŞTUR</button>
+            <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 VİRAL İÇERİK OLUŞTUR</button>
         </div>
 
         <div class="panel" id="stepsPanel" style="display:none">
             <div class="step" id="s1"><span class="step-icon">❓</span>Trend Soru Bulunuyor</div>
-            <div class="step" id="s2"><span class="step-icon">�</span>Cevap Yazılıyor</div>
+            <div class="step" id="s2"><span class="step-icon">🎙️</span>Seslendirme Metni Yazılıyor</div>
             <div class="step" id="s3"><span class="step-icon">🖼️</span>Görsel Oluşturuluyor</div>
-            <div class="step" id="s4"><span class="step-icon">🏷️</span>SEO & Hashtag</div>
+            <div class="step" id="s4"><span class="step-icon">📝</span>Caption & Hashtag</div>
         </div>
 
         <div class="output-box" id="outputBox" style="display:none">
@@ -357,19 +369,25 @@
                     <h5>🔊 Seslendirme</h5>
                     <button class="audio-btn" onclick="speakScript()">▶️ Dinle</button>
                     <button class="audio-btn stop" onclick="stopSpeech()">⏹️ Durdur</button>
-                    <p style="font-size:10px;opacity:0.5;margin-top:8px">Doğal Türkçe ses</p>
+                    <p style="font-size:10px;opacity:0.5;margin-top:8px">Türkçe doğal ses</p>
                     <div style="margin-top:10px">
                         <label style="font-size:10px">Hız:</label>
-                        <input type="range" id="speedRange" min="0.6" max="1.1" step="0.1" value="0.85"
+                        <input type="range" id="speedRange" min="0.7" max="1.0" step="0.05" value="0.85"
                             style="width:80%">
                     </div>
                 </div>
             </div>
 
             <div class="content-section">
-                <h4>📢 Konuşma Metni (Seslendirme)</h4>
+                <h4>🎙️ Seslendirme Metni</h4>
                 <div class="script-box" id="scriptBox"></div>
                 <button class="copy-btn" onclick="copyScript()">📋 Kopyala</button>
+            </div>
+
+            <div class="content-section">
+                <h4>📝 Instagram Caption</h4>
+                <div class="caption-box" id="captionBox"></div>
+                <button class="copy-btn" onclick="copyCaption()">📋 Kopyala</button>
             </div>
 
             <div class="content-section">
@@ -385,6 +403,7 @@
         let selectedCategory = 'kuafor';
         let currentScript = '';
         let currentQuestion = '';
+        let currentCaption = '';
 
         document.querySelectorAll('.cat-btn').forEach(btn => {
             btn.onclick = () => {
@@ -403,50 +422,117 @@
             kuafor: {
                 name: 'Saç Bakımı',
                 color: '#e84393',
-                questionPrompt: 'saç bakımı, saç sağlığı konusunda insanların Google\'da en çok aradığı SORU nedir? Örnek sorular: "Ombre saçta bakım nasıl yapılır?", "Kış aylarında saç dökülmesi nasıl önlenir?", "Boyalı saçlar için en iyi bakım maskesi nedir?"',
-                imagePrompt: 'beautiful healthy shiny hair, hair salon, professional hair styling, modern aesthetic, soft lighting, no text'
+                questionPrompt: `2025 yılında TÜRKİYE'de Google ve Instagram'da saç bakımı ve kuaförlük konusunda EN ÇOK SORULAN ve Reels formatına uygun BİR soru üret.
+
+KURALLAR:
+- Soru mutlaka "2025" içersin
+- Liste veya net sonuç vaadi olsun (5 adım, 3 hata, 1 gerçek gibi)
+- Ombre, balyaj, boya, saç bakımı gibi kelimelerden biri geçsin
+- Instagram Reels'de durdurma etkisi olsun
+- TEK soru yaz
+- Açıklama YAZMA
+
+ÖRNEK TARZ (AYNISINI YAZMA):
+"2025'te ombreli saçlar için yapılması gereken 5 bakım adımı nedir?"`,
+                imagePrompt: 'professional hair salon, beautiful healthy shiny hair, ombre balayage styling, modern aesthetic, soft lighting, no text'
             },
             ai: {
                 name: 'Yapay Zeka',
                 color: '#0984e3',
-                questionPrompt: 'yapay zeka, AI araçları konusunda insanların merak ettiği güncel SORU nedir? Örnek: "ChatGPT 5 ne zaman çıkacak?", "2025\'te en iyi ücretsiz AI araçları hangileri?", "AI ile para nasıl kazanılır?"',
-                imagePrompt: 'futuristic AI technology, neural network visualization, modern tech aesthetic, blue neon lights, no text'
+                questionPrompt: `2025 yılında yapay zeka konusunda insanların EN ÇOK merak ettiği ve Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- "2025" veya "yeni" geçsin
+- Liste vaadi olsun (5 araç, 3 tehlike, 1 sır gibi)
+- ChatGPT, AI, yapay zeka kelimelerinden biri geçsin
+- Durdurma etkisi olsun
+- TEK soru yaz`,
+                imagePrompt: 'futuristic AI technology, neural network visualization, blue neon glow, modern tech, no text'
             },
             bilim: {
                 name: 'Bilim',
                 color: '#6c5ce7',
-                questionPrompt: 'bilim, uzay, teknoloji konusunda insanların merak ettiği ilginç SORU nedir? Örnek: "Mars\'ta yaşam var mı?", "Kuantum bilgisayar nedir?", "Beyin nasıl çalışır?"',
-                imagePrompt: 'science laboratory, space exploration, scientific discovery, modern aesthetic, no text'
+                questionPrompt: `Bilim dünyasında insanların bilmesi gereken ama genelde yanlış bilinen, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- Şaşırtıcı veya ilginç olsun
+- Liste vaadi olsun (5 gerçek, 3 yanlış gibi)
+- Durdurma etkisi olsun
+- TEK soru yaz`,
+                imagePrompt: 'science discovery, space universe, laboratory research, cosmic aesthetic, no text'
             },
             fitness: {
                 name: 'Fitness',
                 color: '#00b894',
-                questionPrompt: 'fitness, egzersiz, sağlıklı yaşam konusunda en çok sorulan SORU nedir? Örnek: "Evde karın kası nasıl yapılır?", "Kilo vermek için en etkili egzersiz nedir?", "Protein tozu zararlı mı?"',
-                imagePrompt: 'fitness workout, healthy lifestyle, gym training, athletic body, modern aesthetic, no text'
+                questionPrompt: `2025 yılında fitness konusunda herkesin yaptığı ama yanlış olan, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- "2025" geçsin
+- Liste vaadi olsun (5 hata, 3 ipucu gibi)
+- Egzersiz, kilo, kas kelimelerinden biri geçsin
+- TEK soru yaz`,
+                imagePrompt: 'fitness workout, athletic training, modern gym, strong body, dynamic pose, no text'
             },
             finans: {
                 name: 'Finans',
                 color: '#fdcb6e',
-                questionPrompt: 'para yönetimi, yatırım, tasarruf konusunda en çok sorulan SORU nedir? Örnek: "2025\'te neye yatırım yapmalı?", "Pasif gelir nasıl elde edilir?", "Kripto para güvenilir mi?"',
-                imagePrompt: 'financial success, money management, investment growth, modern business aesthetic, no text'
+                questionPrompt: `2025 yılında para ve yatırım konusunda herkesin bilmesi gereken, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- "2025" geçsin
+- Liste vaadi olsun (5 hata, 3 yatırım gibi)
+- Para, yatırım, tasarruf kelimelerinden biri geçsin
+- TEK soru yaz`,
+                imagePrompt: 'financial success, money growth, dark luxury aesthetic, gold accents, no text'
             },
             yemek: {
                 name: 'Yemek',
                 color: '#e17055',
-                questionPrompt: 'yemek tarifleri, mutfak konusunda en çok aranan SORU nedir? Örnek: "En kolay tatlı tarifi nedir?", "Pratik akşam yemeği önerileri?", "Yumurtasız kek nasıl yapılır?"',
-                imagePrompt: 'delicious food photography, gourmet cooking, beautiful meal presentation, modern aesthetic, no text'
+                questionPrompt: `Mutfakta herkesin yaptığı ama yanlış olan, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- Şaşırtıcı olsun
+- Liste vaadi olsun (5 hata, 3 ipucu gibi)
+- Yemek, tarif, mutfak kelimelerinden biri geçsin
+- TEK soru yaz`,
+                imagePrompt: 'gourmet food photography, delicious meal, kitchen art, cinematic lighting, no text'
             },
             sanat: {
                 name: 'Sanat',
                 color: '#fd79a8',
-                questionPrompt: 'sanat, tasarım, yaratıcılık konusunda merak edilen SORU nedir? Örnek: "Dijital sanat nasıl yapılır?", "2025 tasarım trendleri neler?", "Resim yapmayı nasıl öğrenebilirim?"',
-                imagePrompt: 'creative art design, artistic inspiration, colorful abstract art, modern aesthetic, no text'
+                questionPrompt: `Sanat ve yaratıcılık konusunda çoğu kişinin fark etmediği, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- İlginç ve düşündürücü olsun
+- Liste vaadi olsun
+- Tasarım, sanat, yaratıcılık geçsin
+- TEK soru yaz`,
+                imagePrompt: 'creative art design, abstract colorful painting, modern aesthetic, artistic inspiration, no text'
             },
             gelisim: {
                 name: 'Kişisel Gelişim',
                 color: '#00cec9',
-                questionPrompt: 'kişisel gelişim, motivasyon, üretkenlik konusunda en çok sorulan SORU nedir? Örnek: "Sabah rutini nasıl oluşturulur?", "Prokrastinasyonu nasıl yenerim?", "Özgüven nasıl arttırılır?"',
-                imagePrompt: 'personal growth motivation, success mindset, inspirational lifestyle, modern aesthetic, no text'
+                questionPrompt: `Kişisel gelişimde sürekli anlatılan ama yanlış anlaşılan, Reels'de viral olabilecek BİR soru üret.
+
+KURALLAR:
+- Düşündürücü olsun
+- Liste vaadi olsun (5 hata, 3 alışkanlık gibi)
+- Motivasyon, üretkenlik, başarı geçsin
+- TEK soru yaz`,
+                imagePrompt: 'personal growth mindset, calm power, success lifestyle, modern aesthetic, no text'
+            },
+            gizlitarih: {
+                name: 'Gizli Tarih',
+                color: '#636e72',
+                questionPrompt: `Resmi tarihle çelişen, insanların duyunca rahatsız olacağı ama gerçek verilere dayanan TEK bir soru yaz.
+
+KURALLAR:
+- Komplo dili kullanma
+- Uzaylı deme
+- Keskin ve net sor
+- Liste vaadi olsun
+- TEK soru yaz`,
+                imagePrompt: 'ancient ruins, lost civilizations, dark mystery, stone textures, archaeological discovery, cinematic light, no text'
             }
         };
 
@@ -454,7 +540,7 @@
             const res = await fetch(API, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ model: 'google/gemma-2-2b-it', messages: [{ role: 'user', content: prompt }], max_tokens: 600, temperature: 0.7 })
+                body: JSON.stringify({ model: 'google/gemma-2-2b-it', messages: [{ role: 'user', content: prompt }], max_tokens: 700, temperature: 0.75 })
             });
             const data = await res.json();
             if (data.error) throw new Error(data.error);
@@ -473,11 +559,10 @@
             } catch { return null; }
         }
 
-        function createFinalImage(baseImageUrl, question, cta, cat) {
+        function createFinalImage(baseImageUrl, question, cat) {
             const canvas = document.getElementById('finalCanvas');
             const ctx = canvas.getContext('2d');
 
-            // Gradient background
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
             gradient.addColorStop(0, '#1a1a2e');
             gradient.addColorStop(1, '#16213e');
@@ -488,23 +573,22 @@
                 const img = new Image();
                 img.crossOrigin = 'anonymous';
                 img.onload = () => {
-                    // Draw image centered
                     const aspectRatio = img.width / img.height;
                     let drawWidth = canvas.width - 40;
                     let drawHeight = drawWidth / aspectRatio;
-                    if (drawHeight > 450) { drawHeight = 450; drawWidth = drawHeight * aspectRatio; }
+                    if (drawHeight > 480) { drawHeight = 480; drawWidth = drawHeight * aspectRatio; }
                     const x = (canvas.width - drawWidth) / 2;
-                    ctx.drawImage(img, x, 200, drawWidth, drawHeight);
-                    addOverlays(ctx, canvas, question, cta, cat);
+                    ctx.drawImage(img, x, 180, drawWidth, drawHeight);
+                    addOverlays(ctx, canvas, question, cat);
                 };
-                img.onerror = () => addOverlays(ctx, canvas, question, cta, cat);
+                img.onerror = () => addOverlays(ctx, canvas, question, cat);
                 img.src = baseImageUrl;
             } else {
-                addOverlays(ctx, canvas, question, cta, cat);
+                addOverlays(ctx, canvas, question, cat);
             }
         }
 
-        function addOverlays(ctx, canvas, question, cta, cat) {
+        function addOverlays(ctx, canvas, question, cat) {
             // Category badge
             ctx.fillStyle = cat.color;
             roundRect(ctx, 20, 20, 180, 32, 16);
@@ -513,28 +597,31 @@
             ctx.font = 'bold 13px Arial';
             ctx.fillText('❓ ' + cat.name.toUpperCase(), 35, 42);
 
-            // QUESTION at top
-            ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            roundRect(ctx, 20, 70, canvas.width - 40, 100, 12);
+            // Question at top
+            ctx.fillStyle = 'rgba(0,0,0,0.75)';
+            roundRect(ctx, 20, 65, canvas.width - 40, 100, 12);
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 22px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
-            wrapText(ctx, question, canvas.width / 2, 110, canvas.width - 60, 28);
+            wrapText(ctx, question, canvas.width / 2, 100, canvas.width - 60, 26);
             ctx.textAlign = 'left';
 
             // CTA at bottom
             ctx.fillStyle = cat.color;
-            roundRect(ctx, 30, canvas.height - 150, canvas.width - 60, 70, 12);
+            roundRect(ctx, 30, canvas.height - 160, canvas.width - 60, 80, 12);
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 22px Arial';
+            ctx.font = 'bold 20px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(cta, canvas.width / 2, canvas.height - 105);
+            ctx.fillText('💡 Cevap için sesi aç!', canvas.width / 2, canvas.height - 130);
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('Kaydet, lazım olacak!', canvas.width / 2, canvas.height - 100);
 
             // Footer
             ctx.font = '14px Arial';
-            ctx.fillText('� Kaydet  •  👆 Takip Et  •  📤 Paylaş', canvas.width / 2, canvas.height - 30);
+            ctx.fillStyle = 'rgba(255,255,255,0.7)';
+            ctx.fillText('💾 Kaydet  •  👆 Takip Et  •  📤 Paylaş', canvas.width / 2, canvas.height - 30);
             ctx.textAlign = 'left';
         }
 
@@ -581,14 +668,20 @@
         function stopSpeech() { speechSynthesis.cancel(); }
 
         function copyScript() {
-            navigator.clipboard.writeText('❓ ' + currentQuestion + '\n\n' + currentScript);
-            alert('✅ Kopyalandı!');
+            navigator.clipboard.writeText(currentScript);
+            alert('✅ Seslendirme metni kopyalandı!');
+        }
+
+        function copyCaption() {
+            const hashtags = document.getElementById('hashtagBox').textContent;
+            navigator.clipboard.writeText(currentCaption + '\n\n' + hashtags);
+            alert('✅ Caption + Hashtag kopyalandı!');
         }
 
         function downloadImage() {
             const canvas = document.getElementById('finalCanvas');
             const link = document.createElement('a');
-            link.download = `viral_${Date.now()}.png`;
+            link.download = `viral_reels_${Date.now()}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         }
@@ -606,36 +699,31 @@
             ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).className = 'step');
 
             try {
-                // STEP 1: Find trending QUESTION
+                // STEP 1: Find viral question
                 document.getElementById('s1').className = 'step active';
-                const qPrompt = `Sen ${cat.name} uzmanısın. ${cat.questionPrompt}
-
-Sadece 1 soru yaz. Soru işareti ile bitir. Başka açıklama yapma.`;
-                currentQuestion = await callAI(qPrompt);
-                currentQuestion = currentQuestion.replace(/[\*\#\"]/g, '').trim();
+                currentQuestion = await callAI(cat.questionPrompt);
+                currentQuestion = currentQuestion.replace(/[\*\#\"\']/g, '').trim();
                 if (!currentQuestion.endsWith('?')) currentQuestion += '?';
                 document.getElementById('s1').className = 'step done';
                 await sleep(800);
 
-                // STEP 2: Write ANSWER as speech (NO INSTRUCTIONS)
+                // STEP 2: Write voiceover script
                 document.getElementById('s2').className = 'step active';
-                const answerPrompt = `Bu soruyu cevapla: "${currentQuestion}"
+                const answerPrompt = `Bu sorunun cevabını SADECE SESLENDİRME için yaz:
+
+"${currentQuestion}"
 
 KURALLAR:
-- Doğrudan cevap ver, yönergeler yazma
-- "Hook", "CTA", saniye bilgisi, parantez KULLANMA
-- Doğal konuşma dili kullan
-- 4-5 cümle ile özet bilgi ver
-- Samimi ve öğretici ol
-- "Takip et" ile bitir
+- Liste dili kullan (Birincisi..., İkincisi...)
+- 5 maddeyi 1-2 cümleyle anlat
+- Profesyonel ${cat.name.toLowerCase()} uzmanı ağzı kullan
+- Detay VAR ama öğretmen gibi değil
+- Yazıda kullanılacağını düşünme
+- "Kaydet, çünkü lazım olacak." cümlesiyle bitir
+- Emojisiz
+- Madde numarası yazma
+- Parantez, yönerge, "Hook", "CTA" YAZMA`;
 
-KÖTÜ ÖRNEK (YAPMA):
-"Hook (0-3sn): Soru sor..."
-
-İYİ ÖRNEK:
-"Bu sorunun cevabı aslında çok basit. Birincisi şunu yapmalısın. İkincisi buna dikkat et. Üçüncüsü bundan kaçın. Bu ipuçlarını uygularsan farkı göreceksin. Daha fazlası için takip et!"
-
-Şimdi "${currentQuestion}" sorusunu cevapla:`;
                 currentScript = await callAI(answerPrompt);
                 currentScript = currentScript
                     .replace(/[\*\#\[\]\(\)\"]/g, '')
@@ -645,26 +733,41 @@ KÖTÜ ÖRNEK (YAPMA):
                 document.getElementById('s2').className = 'step done';
                 await sleep(800);
 
-                // STEP 3: Generate image with question + CTA
+                // STEP 3: Generate image
                 document.getElementById('s3').className = 'step active';
-                const imgUrl = await generateImage(cat.imagePrompt + ', high quality, instagram reels style');
-                const cta = '💡 Cevabı Öğrenmek İçin Kaydet!';
-                createFinalImage(imgUrl, currentQuestion, cta, cat);
+                const imgUrl = await generateImage(cat.imagePrompt + ', high quality, instagram reels vertical 9:16');
+                createFinalImage(imgUrl, currentQuestion, cat);
                 document.getElementById('s3').className = 'step done';
                 await sleep(500);
 
-                // STEP 4: Hashtags
+                // STEP 4: Caption & Hashtags
                 document.getElementById('s4').className = 'step active';
-                const hashtagPrompt = `"${currentQuestion}" için 10 Türkçe Instagram hashtag yaz. Sadece hashtag'leri yaz, virgülle ayır.`;
+
+                const captionPrompt = `"${currentQuestion}" için Instagram Reels açıklaması yaz.
+
+KURALLAR:
+- CEVABI ASLA VERME
+- Merak uyandır
+- 2-3 kısa cümle
+- "Kaydetmeden geçme" mutlaka olsun
+- Profesyonel ama samimi
+- Emoji kullan`;
+
+                currentCaption = await callAI(captionPrompt);
+                currentCaption = currentCaption.replace(/[\*\#\"]/g, '').trim();
+
+                const hashtagPrompt = `"${currentQuestion}" için 12 Türkçe Instagram hashtag yaz. Sadece hashtag'leri virgülle ayırarak yaz.`;
                 let hashtags = await callAI(hashtagPrompt);
                 hashtags = hashtags.match(/#[\wığüşöçİĞÜŞÖÇ]+/g) || [];
+
                 document.getElementById('s4').className = 'step done';
 
                 // Display results
                 document.getElementById('outputBox').style.display = 'block';
                 document.getElementById('questionBox').innerHTML = '❓ <strong>' + currentQuestion + '</strong>';
                 document.getElementById('scriptBox').textContent = currentScript;
-                document.getElementById('hashtagBox').innerHTML = hashtags.slice(0, 10).map(h => `<span class="hashtag">${h}</span>`).join('');
+                document.getElementById('captionBox').textContent = currentCaption;
+                document.getElementById('hashtagBox').innerHTML = hashtags.slice(0, 12).map(h => `<span class="hashtag">${h}</span>`).join('');
                 document.getElementById('bestTime').textContent = '🕐 En iyi paylaşım: 12:00-14:00 veya 19:00-21:00 (TR)';
 
             } catch (e) {
@@ -672,7 +775,7 @@ KÖTÜ ÖRNEK (YAPMA):
             }
 
             btn.disabled = false;
-            btn.textContent = '🔄 YENİ İÇERİK';
+            btn.textContent = '🔄 YENİ VİRAL İÇERİK';
         }
 
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
