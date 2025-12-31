@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎬 Viral Content Creator</title>
+    <title>🎬 Viral Content Creator Pro</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
     <style>
@@ -15,113 +15,158 @@
         }
 
         body {
-            font-family: -apple-system, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
-            padding: 15px;
+            padding: 20px;
             color: #fff
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px
+            margin-bottom: 25px
         }
 
         .header h1 {
-            font-size: 24px;
-            margin-bottom: 6px
+            font-size: 28px;
+            background: linear-gradient(90deg, #00b894, #00cec9, #74b9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px
         }
 
         .badge {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 10px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
             background: linear-gradient(90deg, #00b894, #00cec9);
-            margin-bottom: 8px
+            margin-bottom: 10px;
+            font-weight: 600
         }
 
         .panel {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px
         }
 
         .category-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 15px
         }
 
         .cat-btn {
-            padding: 12px 8px;
-            background: rgba(255, 255, 255, 0.08);
+            padding: 14px 10px;
+            background: rgba(255, 255, 255, 0.05);
             border: 2px solid transparent;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #fff;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s;
-            font-size: 11px
+            font-size: 12px
         }
 
         .cat-btn:hover {
-            background: rgba(255, 255, 255, 0.15)
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px)
         }
 
         .cat-btn.active {
             border-color: #00b894;
-            background: rgba(0, 184, 148, 0.2)
+            background: rgba(0, 184, 148, 0.15);
+            box-shadow: 0 0 20px rgba(0, 184, 148, 0.3)
         }
 
         .cat-btn .icon {
-            font-size: 24px;
+            font-size: 26px;
             display: block;
-            margin-bottom: 4px
+            margin-bottom: 6px
+        }
+
+        .format-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px
+        }
+
+        .format-btn {
+            flex: 1;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            font-size: 13px
+        }
+
+        .format-btn:hover {
+            background: rgba(255, 255, 255, 0.1)
+        }
+
+        .format-btn.active {
+            border-color: #6c5ce7;
+            background: rgba(108, 92, 231, 0.2)
+        }
+
+        .format-btn .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px
         }
 
         .input-group {
-            margin-bottom: 10px
+            margin-bottom: 12px
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
             font-size: 12px;
             opacity: 0.8
         }
 
         .input-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 8px;
             background: rgba(0, 0, 0, 0.3);
             color: #fff;
-            font-size: 12px
+            font-size: 13px
         }
 
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(135deg, #00b894, #00cec9);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             color: #fff;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3)
         }
 
         .btn:hover {
-            transform: scale(1.02)
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4)
         }
 
         .btn:disabled {
@@ -131,14 +176,15 @@
         }
 
         .step {
-            padding: 8px 10px;
-            margin: 5px 0;
-            border-radius: 6px;
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #333;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #333;
             display: flex;
             align-items: center;
-            font-size: 12px
+            font-size: 13px;
+            transition: all 0.3s
         }
 
         .step.active {
@@ -152,31 +198,31 @@
         }
 
         .step-icon {
-            font-size: 16px;
-            margin-right: 8px
+            font-size: 18px;
+            margin-right: 10px
         }
 
         .output-box {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 12px
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 15px
         }
 
         .config-toggle {
             background: none;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 6px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 10px;
-            margin-bottom: 10px
+            font-size: 11px;
+            margin-bottom: 12px
         }
 
         .config-panel {
             display: none;
-            margin-bottom: 12px
+            margin-bottom: 15px
         }
 
         .config-panel.show {
@@ -184,120 +230,178 @@
         }
 
         .content-section {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px
+            background: rgba(255, 255, 255, 0.02);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05)
         }
 
         .content-section h4 {
             color: #00b894;
-            margin-bottom: 8px;
-            font-size: 13px
+            margin-bottom: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
         }
 
-        .media-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .question-box {
+            background: linear-gradient(135deg, rgba(0, 184, 148, 0.15), rgba(0, 206, 201, 0.1));
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+            border: 1px solid rgba(0, 184, 148, 0.2)
+        }
+
+        .audio-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
             margin-bottom: 15px
         }
 
-        .media-card {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center
-        }
-
-        .media-card canvas {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 8px
-        }
-
-        .media-card h5 {
-            font-size: 12px;
-            margin-bottom: 8px;
-            color: #00b894
-        }
-
         .audio-btn {
-            padding: 10px 15px;
-            background: #00b894;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #00b894, #00a884);
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #fff;
             cursor: pointer;
-            font-size: 12px;
-            margin: 3px
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s
         }
 
         .audio-btn:hover {
-            background: #00a884
+            transform: translateY(-1px)
         }
 
         .audio-btn.stop {
-            background: #e74c3c
+            background: linear-gradient(135deg, #e74c3c, #c0392b)
         }
 
         .audio-btn.download {
-            background: #6c5ce7
+            background: linear-gradient(135deg, #6c5ce7, #5b4cdb)
+        }
+
+        .audio-btn:disabled {
+            opacity: 0.5
         }
 
         .script-box {
-            background: #000;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.8;
-            color: #0f0;
-            white-space: pre-wrap
+            background: #0a0a0f;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.9;
+            color: #00ff88;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            border: 1px solid rgba(0, 255, 136, 0.2)
         }
 
         .caption-box {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.7;
             color: #fff;
             white-space: pre-wrap
         }
 
         .copy-btn {
-            padding: 8px 15px;
-            background: #6c5ce7;
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #6c5ce7, #5b4cdb);
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #fff;
             cursor: pointer;
-            font-size: 11px;
-            margin-top: 8px;
-            margin-right: 5px
+            font-size: 12px;
+            margin-top: 10px;
+            margin-right: 8px;
+            font-weight: 600
         }
 
         .hashtags {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 10px
+            gap: 6px;
+            margin-top: 12px
         }
 
         .hashtag {
             background: rgba(0, 184, 148, 0.2);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            border: 1px solid rgba(0, 184, 148, 0.3)
         }
 
-        .question-box {
-            background: rgba(0, 184, 148, 0.15);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 15px;
-            text-align: center
+        /* Carousel Styles */
+        .carousel-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 15px
+        }
+
+        .carousel-slide {
+            background: #16213e;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s
+        }
+
+        .carousel-slide:hover {
+            border-color: #00b894
+        }
+
+        .carousel-slide.active {
+            border-color: #00b894;
+            box-shadow: 0 0 15px rgba(0, 184, 148, 0.3)
+        }
+
+        .carousel-slide canvas {
+            width: 100%;
+            display: block
+        }
+
+        .carousel-slide-label {
+            padding: 8px;
+            text-align: center;
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.3)
+        }
+
+        .carousel-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s linear infinite;
+            margin-right: 8px
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg)
+            }
         }
 
         @media(max-width:600px) {
@@ -305,8 +409,12 @@
                 grid-template-columns: repeat(2, 1fr)
             }
 
-            .media-section {
-                grid-template-columns: 1fr
+            .format-toggle {
+                flex-direction: column
+            }
+
+            .carousel-preview {
+                grid-template-columns: repeat(2, 1fr)
             }
         }
     </style>
@@ -315,13 +423,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <span class="badge">🤖 FULL AUTOMATION 2025</span>
+            <span class="badge">🤖 PRO AUTOMATION 2025</span>
             <h1>🎬 Viral Content Creator</h1>
-            <p style="opacity:0.6;font-size:12px">Soru + Ses + Görsel + Caption = Viral Reels</p>
+            <p style="opacity:0.6;font-size:13px">Soru + Doğal Ses + Profesyonel Görsel = Viral İçerik</p>
         </div>
 
         <div class="panel">
-            <h4 style="margin-bottom:10px;font-size:13px">📂 Kategori Seç</h4>
+            <h4 style="margin-bottom:12px;font-size:14px">📂 Kategori Seç</h4>
             <div class="category-grid">
                 <button class="cat-btn active" data-cat="kuafor"><span class="icon">💇</span>Kuaför</button>
                 <button class="cat-btn" data-cat="ai"><span class="icon">🤖</span>Yapay Zeka</button>
@@ -336,7 +444,15 @@
         </div>
 
         <div class="panel">
-            <button class="config-toggle" onclick="toggleConfig()">⚙️ API Token</button>
+            <h4 style="margin-bottom:12px;font-size:14px">🎯 Format Seç</h4>
+            <div class="format-toggle">
+                <button class="format-btn active" data-format="reels"><span class="icon">🎬</span>Reels / Story</button>
+                <button class="format-btn" data-format="carousel"><span class="icon">📑</span>Carousel Post</button>
+            </div>
+        </div>
+
+        <div class="panel">
+            <button class="config-toggle" onclick="toggleConfig()">⚙️ API Ayarları</button>
             <div class="config-panel" id="configPanel">
                 <div class="input-group">
                     <label>🔑 <a href="https://huggingface.co/settings/tokens" target="_blank"
@@ -344,7 +460,7 @@
                     <input type="password" id="tokenInput" placeholder="hf_xxxxxxxxxxxxx">
                 </div>
                 <button onclick="saveToken()"
-                    style="padding:6px 12px;background:#00b894;border:none;border-radius:5px;color:#fff;cursor:pointer;font-size:11px">💾
+                    style="padding:8px 15px;background:#00b894;border:none;border-radius:6px;color:#fff;cursor:pointer;font-size:12px">💾
                     Kaydet</button>
             </div>
             <button class="btn" id="startBtn" onclick="runWorkflow()">🚀 VİRAL İÇERİK OLUŞTUR</button>
@@ -353,39 +469,60 @@
         <div class="panel" id="stepsPanel" style="display:none">
             <div class="step" id="s1"><span class="step-icon">❓</span>Trend Soru Bulunuyor</div>
             <div class="step" id="s2"><span class="step-icon">🎙️</span>Seslendirme Yazılıyor</div>
-            <div class="step" id="s3"><span class="step-icon">🖼️</span>Görsel Oluşturuluyor</div>
+            <div class="step" id="s3"><span class="step-icon">🖼️</span>Görseller Oluşturuluyor</div>
             <div class="step" id="s4"><span class="step-icon">📝</span>Caption & Hashtag</div>
+            <div class="step" id="s5"><span class="step-icon">🔊</span>Ses Üretiliyor (AI)</div>
         </div>
 
         <div class="output-box" id="outputBox" style="display:none">
             <div class="question-box" id="questionBox"></div>
-            <div class="media-section">
-                <div class="media-card">
-                    <h5>🖼️ Görsel</h5>
-                    <canvas id="finalCanvas" width="540" height="960"></canvas>
-                    <button class="audio-btn download" onclick="downloadImage()">📥 İndir</button>
-                </div>
-                <div class="media-card">
-                    <h5>🔊 Seslendirme</h5>
-                    <button class="audio-btn" onclick="speakScript()">▶️ Dinle</button>
-                    <button class="audio-btn stop" onclick="stopSpeech()">⏹️ Durdur</button>
+
+            <!-- Reels Output -->
+            <div id="reelsOutput">
+                <div class="content-section">
+                    <h4>🖼️ Görsel</h4>
+                    <canvas id="finalCanvas" width="540" height="960"
+                        style="width:100%;max-width:300px;border-radius:12px"></canvas>
                     <div style="margin-top:10px">
-                        <label style="font-size:10px">Hız:</label>
-                        <input type="range" id="speedRange" min="0.7" max="1.0" step="0.05" value="0.85"
-                            style="width:80%">
+                        <button class="audio-btn download" onclick="downloadImage()">📥 Görsel İndir</button>
                     </div>
                 </div>
             </div>
+
+            <!-- Carousel Output -->
+            <div id="carouselOutput" style="display:none">
+                <div class="content-section">
+                    <h4>📑 Carousel Slide'ları (7 adet)</h4>
+                    <div class="carousel-preview" id="carouselPreview"></div>
+                    <div class="carousel-actions">
+                        <button class="audio-btn download" onclick="downloadAllSlides()">📥 Tümünü İndir (ZIP)</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h4>🔊 Seslendirme</h4>
+                <div class="audio-section">
+                    <button class="audio-btn" id="playTtsBtn" onclick="playTTS()">▶️ Dinle (AI Ses)</button>
+                    <button class="audio-btn stop" onclick="stopTTS()">⏹️ Durdur</button>
+                    <button class="audio-btn download" id="downloadAudioBtn" onclick="downloadAudio()" disabled>📥 MP3
+                        İndir</button>
+                </div>
+                <audio id="ttsAudio" style="display:none"></audio>
+            </div>
+
             <div class="content-section">
                 <h4>🎙️ Seslendirme Metni</h4>
                 <div class="script-box" id="scriptBox"></div>
-                <button class="copy-btn" onclick="copyScript()">📋 Kopyala</button>
+                <button class="copy-btn" onclick="copyScript()">📋 Metni Kopyala</button>
             </div>
+
             <div class="content-section">
-                <h4>📝 Caption (Cevap)</h4>
+                <h4>📝 Caption (Cevap İçerir)</h4>
                 <div class="caption-box" id="captionBox"></div>
-                <button class="copy-btn" onclick="copyCaption()">📋 Kopyala</button>
+                <button class="copy-btn" onclick="copyCaption()">📋 Caption Kopyala</button>
             </div>
+
             <div class="content-section">
                 <h4>🏷️ Hashtags</h4>
                 <div class="hashtags" id="hashtagBox"></div>
@@ -395,11 +532,18 @@
 
     <script>
         const API = 'https://router.huggingface.co/v1/chat/completions';
+        const TTS_API = 'https://router.huggingface.co/hf-inference/models/facebook/mms-tts-tur';
+        const IMG_API = 'https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0';
+
         let selectedCategory = 'kuafor';
+        let selectedFormat = 'reels';
         let currentScript = '';
         let currentQuestion = '';
         let currentCaption = '';
+        let currentAudioBlob = null;
+        let carouselSlides = [];
 
+        // Category selection
         document.querySelectorAll('.cat-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
@@ -408,70 +552,69 @@
             };
         });
 
+        // Format selection
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedFormat = btn.dataset.format;
+            };
+        });
+
         function toggleConfig() { document.getElementById('configPanel').classList.toggle('show'); }
         function saveToken() { localStorage.setItem('hf_token', document.getElementById('tokenInput').value); alert('✅ Kaydedildi!'); toggleConfig(); }
         function getToken() { return localStorage.getItem('hf_token') || ''; }
         window.onload = () => { if (getToken()) document.getElementById('tokenInput').value = getToken(); }
 
-        // Random topic selection for variety
         function getRandomTopic(topics) {
             return topics[Math.floor(Math.random() * topics.length)];
         }
 
         const CATEGORIES = {
             kuafor: {
-                name: 'Saç Bakımı',
-                color: '#e84393',
-                topics: ['ombre bakımı', 'balyaj bakımı', 'boyalı saç bakımı', 'saç dökülmesi', 'kırık uçlar', 'saç uzatma', 'kıvırcık saç bakımı', 'yağlı saç sorunu', 'kuru saç bakımı', 'saç rengi koruma', 'soğuk hava saç bakımı', 'yaz saç bakımı', 'havuz sonrası bakım', 'protein tedavisi', 'keratin bakımı'],
-                imagePrompt: 'professional hair salon, beautiful healthy shiny hair, modern aesthetic, soft lighting, no text'
+                name: 'Saç Bakımı', color: '#e84393',
+                topics: ['ombre bakımı', 'balyaj bakımı', 'boyalı saç', 'saç dökülmesi', 'kırık uçlar', 'saç uzatma', 'kıvırcık saç', 'yağlı saç', 'kuru saç', 'renk koruma', 'kış bakımı', 'yaz bakımı', 'keratin'],
+                imagePrompt: 'professional hair salon, beautiful healthy shiny hair, modern aesthetic, soft lighting'
             },
             ai: {
-                name: 'Yapay Zeka',
-                color: '#0984e3',
-                topics: ['ChatGPT güncellemeleri', 'ücretsiz AI araçları', 'AI ile para kazanma', 'AI tehlikeleri', 'Midjourney', 'AI video üretimi', 'Claude AI', 'Gemini AI'],
-                imagePrompt: 'futuristic AI technology, neural network visualization, blue neon glow, modern tech, no text'
+                name: 'Yapay Zeka', color: '#0984e3',
+                topics: ['ChatGPT', 'ücretsiz AI araçları', 'AI ile para kazanma', 'AI tehlikeleri', 'Midjourney', 'AI video', 'Claude', 'Gemini'],
+                imagePrompt: 'futuristic AI technology, neural network, blue neon glow, modern tech'
             },
             bilim: {
-                name: 'Bilim',
-                color: '#6c5ce7',
-                topics: ['uzay keşifleri', 'beyin gizemler', 'kuantum fiziği', 'evrim', 'Mars', 'kara delikler', 'DNA', 'yapay organ'],
-                imagePrompt: 'science discovery, space universe, laboratory research, cosmic aesthetic, no text'
+                name: 'Bilim', color: '#6c5ce7',
+                topics: ['uzay keşifleri', 'beyin', 'kuantum', 'evrim', 'Mars', 'kara delikler', 'DNA'],
+                imagePrompt: 'science discovery, space universe, laboratory, cosmic aesthetic'
             },
             fitness: {
-                name: 'Fitness',
-                color: '#00b894',
-                topics: ['karın kası', 'kilo verme', 'kas yapma', 'ev egzersizi', 'protein', 'diyet hataları', 'sabah egzersizi', 'bacak antrenmanı'],
-                imagePrompt: 'fitness workout, athletic training, modern gym, strong body, dynamic pose, no text'
+                name: 'Fitness', color: '#00b894',
+                topics: ['karın kası', 'kilo verme', 'kas yapma', 'ev egzersizi', 'protein', 'diyet', 'bacak'],
+                imagePrompt: 'fitness workout, athletic training, modern gym, strong body'
             },
             finans: {
-                name: 'Finans',
-                color: '#fdcb6e',
-                topics: ['tasarruf', 'yatırım', 'kripto', 'pasif gelir', 'borsa', 'altın', 'dolar', 'bütçe yönetimi'],
-                imagePrompt: 'financial success, money growth, dark luxury aesthetic, gold accents, no text'
+                name: 'Finans', color: '#fdcb6e',
+                topics: ['tasarruf', 'yatırım', 'kripto', 'pasif gelir', 'borsa', 'altın', 'bütçe'],
+                imagePrompt: 'financial success, money growth, dark luxury, gold accents'
             },
             yemek: {
-                name: 'Yemek',
-                color: '#e17055',
-                topics: ['pratik tarifler', 'sağlıklı atıştırmalık', 'kahvaltı', 'tatlı', 'et pişirme', 'sebze yemekleri', 'makarna', 'çorba'],
-                imagePrompt: 'gourmet food photography, delicious meal, kitchen art, cinematic lighting, no text'
+                name: 'Yemek', color: '#e17055',
+                topics: ['pratik tarif', 'sağlıklı', 'kahvaltı', 'tatlı', 'et pişirme', 'sebze', 'makarna'],
+                imagePrompt: 'gourmet food photography, delicious meal, kitchen art'
             },
             sanat: {
-                name: 'Sanat',
-                color: '#fd79a8',
-                topics: ['dijital sanat', 'çizim teknikleri', 'renk teorisi', 'tasarım trendleri', 'fotoğrafçılık', 'illüstrasyon', 'logo tasarımı'],
-                imagePrompt: 'creative art design, abstract colorful painting, modern aesthetic, artistic inspiration, no text'
+                name: 'Sanat', color: '#fd79a8',
+                topics: ['dijital sanat', 'çizim', 'renk teorisi', 'tasarım', 'fotoğrafçılık', 'illüstrasyon'],
+                imagePrompt: 'creative art design, abstract colorful painting, artistic'
             },
             gelisim: {
-                name: 'Kişisel Gelişim',
-                color: '#00cec9',
-                topics: ['sabah rutini', 'prokrastinasyon', 'özgüven', 'zaman yönetimi', 'motivasyon', 'alışkanlık', 'odaklanma', 'stres yönetimi'],
-                imagePrompt: 'personal growth mindset, calm power, success lifestyle, modern aesthetic, no text'
+                name: 'Kişisel Gelişim', color: '#00cec9',
+                topics: ['sabah rutini', 'prokrastinasyon', 'özgüven', 'zaman yönetimi', 'motivasyon', 'odaklanma'],
+                imagePrompt: 'personal growth mindset, calm power, success lifestyle'
             },
             gizlitarih: {
-                name: 'Gizli Tarih',
-                color: '#636e72',
-                topics: ['antik medeniyetler', 'kayıp şehirler', 'piramitler', 'gizli topluluklar', 'eski teknolojiler', 'bilinmeyen savaşlar'],
-                imagePrompt: 'ancient ruins, lost civilizations, dark mystery, stone textures, cinematic light, no text'
+                name: 'Gizli Tarih', color: '#636e72',
+                topics: ['antik medeniyetler', 'kayıp şehirler', 'piramitler', 'gizli topluluklar', 'eski teknolojiler'],
+                imagePrompt: 'ancient ruins, lost civilizations, dark mystery, stone textures'
             }
         };
 
@@ -479,33 +622,51 @@
             const res = await fetch(API, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ model: 'google/gemma-2-2b-it', messages: [{ role: 'user', content: prompt }], max_tokens: 700, temperature: 0.8 })
+                body: JSON.stringify({ model: 'google/gemma-2-2b-it', messages: [{ role: 'user', content: prompt }], max_tokens: 800, temperature: 0.85 })
             });
             const data = await res.json();
-            if (data.error) throw new Error(data.error);
+            if (data.error) throw new Error(data.error.message || data.error);
             return data.choices?.[0]?.message?.content || '';
+        }
+
+        async function generateTTS(text) {
+            const res = await fetch(TTS_API, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inputs: text })
+            });
+            if (!res.ok) throw new Error('TTS hatası');
+            return await res.blob();
         }
 
         async function generateImage(prompt) {
             try {
-                const res = await fetch('https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0', {
+                const res = await fetch(IMG_API, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${getToken()}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inputs: prompt })
+                    body: JSON.stringify({ inputs: prompt + ', high quality, no text, no letters' })
                 });
                 if (!res.ok) return null;
                 return URL.createObjectURL(await res.blob());
             } catch { return null; }
         }
 
-        function createFinalImage(baseImageUrl, question, cat) {
+        function cleanForTTS(text) {
+            return text
+                .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
+                .replace(/[\u{2600}-\u{26FF}]/gu, '')
+                .replace(/[\u{2700}-\u{27BF}]/gu, '')
+                .replace(/[\*\#\[\]\(\)\"\']/g, '')
+                .replace(/Göz teması|SORU:|KONU:|YAPI:|FORMAT:|KURALLAR:/gi, '')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+
+        // ============ CANVAS DRAWING ============
+        function createReelsImage(baseImageUrl, question, cat) {
             const canvas = document.getElementById('finalCanvas');
             const ctx = canvas.getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#1a1a2e');
-            gradient.addColorStop(1, '#16213e');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            drawGradientBg(ctx, canvas, cat.color);
 
             if (baseImageUrl) {
                 const img = new Image();
@@ -516,45 +677,203 @@
                     let drawHeight = drawWidth / aspectRatio;
                     if (drawHeight > 480) { drawHeight = 480; drawWidth = drawHeight * aspectRatio; }
                     const x = (canvas.width - drawWidth) / 2;
-                    ctx.drawImage(img, x, 180, drawWidth, drawHeight);
-                    addOverlays(ctx, canvas, question, cat);
+                    ctx.drawImage(img, x, 200, drawWidth, drawHeight);
+                    addReelsOverlays(ctx, canvas, question, cat);
                 };
-                img.onerror = () => addOverlays(ctx, canvas, question, cat);
+                img.onerror = () => addReelsOverlays(ctx, canvas, question, cat);
                 img.src = baseImageUrl;
             } else {
-                addOverlays(ctx, canvas, question, cat);
+                addReelsOverlays(ctx, canvas, question, cat);
             }
         }
 
-        function addOverlays(ctx, canvas, question, cat) {
-            ctx.fillStyle = cat.color;
-            roundRect(ctx, 20, 20, 180, 32, 16);
-            ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 13px Arial';
-            ctx.fillText('❓ ' + cat.name.toUpperCase(), 35, 42);
+        function drawGradientBg(ctx, canvas, accentColor) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#0f0f1a');
+            gradient.addColorStop(0.5, '#1a1a2e');
+            gradient.addColorStop(1, '#16213e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
-            ctx.fillStyle = 'rgba(0,0,0,0.75)';
-            roundRect(ctx, 20, 65, canvas.width - 40, 100, 12);
+        function addReelsOverlays(ctx, canvas, question, cat) {
+            // Category badge
+            ctx.fillStyle = cat.color;
+            roundRect(ctx, 20, 25, 180, 36, 18);
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 20px Arial';
+            ctx.font = 'bold 14px Segoe UI';
+            ctx.fillText('❓ ' + cat.name.toUpperCase(), 38, 50);
+
+            // Question box
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            roundRect(ctx, 20, 75, canvas.width - 40, 110, 14);
+            ctx.fill();
+            ctx.strokeStyle = cat.color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 22px Segoe UI';
             ctx.textAlign = 'center';
-            wrapText(ctx, question, canvas.width / 2, 100, canvas.width - 60, 26);
+            wrapText(ctx, question, canvas.width / 2, 115, canvas.width - 60, 28);
             ctx.textAlign = 'left';
 
-            ctx.fillStyle = cat.color;
-            roundRect(ctx, 30, canvas.height - 150, canvas.width - 60, 70, 12);
+            // CTA Box
+            const ctaGradient = ctx.createLinearGradient(30, canvas.height - 160, canvas.width - 30, canvas.height - 90);
+            ctaGradient.addColorStop(0, cat.color);
+            ctaGradient.addColorStop(1, shadeColor(cat.color, -20));
+            ctx.fillStyle = ctaGradient;
+            roundRect(ctx, 30, canvas.height - 160, canvas.width - 60, 75, 14);
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 18px Arial';
+            ctx.font = 'bold 20px Segoe UI';
             ctx.textAlign = 'center';
-            ctx.fillText('💡 Cevap için açıklamayı oku!', canvas.width / 2, canvas.height - 105);
+            ctx.fillText('💡 Cevap için açıklamayı oku!', canvas.width / 2, canvas.height - 115);
 
-            ctx.font = '14px Arial';
-            ctx.fillStyle = 'rgba(255,255,255,0.7)';
-            ctx.fillText('💾 Kaydet  •  👆 Takip Et', canvas.width / 2, canvas.height - 30);
+            // Footer
+            ctx.font = '15px Segoe UI';
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillText('💾 Kaydet  •  👆 Takip Et', canvas.width / 2, canvas.height - 35);
             ctx.textAlign = 'left';
+        }
+
+        // ============ CAROUSEL SLIDES ============
+        async function createCarouselSlides(question, tips, cat) {
+            carouselSlides = [];
+            const container = document.getElementById('carouselPreview');
+            container.innerHTML = '';
+
+            const slideConfigs = [
+                { type: 'cover', title: question },
+                ...tips.slice(0, 5).map((tip, i) => ({ type: 'tip', num: i + 1, content: tip })),
+                { type: 'cta' }
+            ];
+
+            for (let i = 0; i < slideConfigs.length; i++) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 1080;
+                canvas.height = 1080;
+                const ctx = canvas.getContext('2d');
+
+                await drawCarouselSlide(ctx, canvas, slideConfigs[i], cat, i + 1, slideConfigs.length);
+
+                carouselSlides.push(canvas);
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'carousel-slide';
+                const preview = document.createElement('canvas');
+                preview.width = 200;
+                preview.height = 200;
+                preview.getContext('2d').drawImage(canvas, 0, 0, 200, 200);
+                preview.style.width = '100%';
+
+                const label = document.createElement('div');
+                label.className = 'carousel-slide-label';
+                label.textContent = `Slide ${i + 1}`;
+
+                wrapper.appendChild(preview);
+                wrapper.appendChild(label);
+                wrapper.onclick = () => downloadSlide(i);
+                container.appendChild(wrapper);
+            }
+        }
+
+        async function drawCarouselSlide(ctx, canvas, config, cat, num, total) {
+            // Premium gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#0f0f1a');
+            gradient.addColorStop(0.4, shadeColor(cat.color, -70));
+            gradient.addColorStop(1, '#1a1a2e');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Glassmorphism card
+            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+            roundRect(ctx, 60, 60, canvas.width - 120, canvas.height - 120, 40);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Page indicator
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
+            ctx.font = '24px Segoe UI';
+            ctx.textAlign = 'right';
+            ctx.fillText(`${num}/${total}`, canvas.width - 80, 110);
+            ctx.textAlign = 'left';
+
+            if (config.type === 'cover') {
+                // Cover slide
+                ctx.fillStyle = cat.color;
+                roundRect(ctx, 100, 200, 250, 50, 25);
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 24px Segoe UI';
+                ctx.fillText('❓ ' + cat.name.toUpperCase(), 130, 235);
+
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 52px Segoe UI';
+                ctx.textAlign = 'center';
+                wrapText(ctx, config.title, canvas.width / 2, 420, canvas.width - 200, 65);
+
+                ctx.font = '28px Segoe UI';
+                ctx.fillStyle = 'rgba(255,255,255,0.7)';
+                ctx.fillText('👉 Kaydır ve öğren', canvas.width / 2, canvas.height - 150);
+                ctx.textAlign = 'left';
+
+            } else if (config.type === 'tip') {
+                // Tip slide
+                const numCircleSize = 120;
+                ctx.fillStyle = cat.color;
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, 250, numCircleSize / 2, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 60px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText(config.num.toString(), canvas.width / 2, 270);
+
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 42px Segoe UI';
+                wrapText(ctx, config.content, canvas.width / 2, 480, canvas.width - 180, 55);
+                ctx.textAlign = 'left';
+
+            } else if (config.type === 'cta') {
+                // CTA slide
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 48px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText('Bu bilgi işine yaradıysa...', canvas.width / 2, 280);
+
+                const buttons = [
+                    { emoji: '💾', text: 'KAYDET', y: 420 },
+                    { emoji: '📤', text: 'PAYLAŞ', y: 550 },
+                    { emoji: '👆', text: 'TAKİP ET', y: 680 }
+                ];
+
+                buttons.forEach(btn => {
+                    ctx.fillStyle = cat.color;
+                    roundRect(ctx, 200, btn.y - 40, canvas.width - 400, 80, 20);
+                    ctx.fill();
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 32px Segoe UI';
+                    ctx.fillText(`${btn.emoji} ${btn.text}`, canvas.width / 2, btn.y + 10);
+                });
+
+                ctx.font = '26px Segoe UI';
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.fillText('Daha fazlası için → @hesabiniz', canvas.width / 2, canvas.height - 120);
+                ctx.textAlign = 'left';
+            }
+        }
+
+        function shadeColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+            const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+            const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+            return `#${(1 << 24 | R << 16 | G << 8 | B).toString(16).slice(1)}`;
         }
 
         function roundRect(ctx, x, y, w, h, r) {
@@ -587,17 +906,28 @@
             ctx.fillText(line.trim(), x, y);
         }
 
-        function speakScript() {
-            if (!currentScript) return;
-            speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(currentScript);
-            u.lang = 'tr-TR';
-            u.rate = parseFloat(document.getElementById('speedRange').value);
-            u.pitch = 1.0;
-            speechSynthesis.speak(u);
+        // ============ AUDIO FUNCTIONS ============
+        function playTTS() {
+            const audio = document.getElementById('ttsAudio');
+            if (audio.src) {
+                audio.play();
+            }
         }
 
-        function stopSpeech() { speechSynthesis.cancel(); }
+        function stopTTS() {
+            const audio = document.getElementById('ttsAudio');
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        function downloadAudio() {
+            if (!currentAudioBlob) return;
+            const link = document.createElement('a');
+            link.download = `seslendirme_${Date.now()}.wav`;
+            link.href = URL.createObjectURL(currentAudioBlob);
+            link.click();
+        }
+
         function copyScript() { navigator.clipboard.writeText(currentScript); alert('✅ Kopyalandı!'); }
         function copyCaption() {
             const hashtags = document.getElementById('hashtagBox').textContent;
@@ -613,6 +943,22 @@
             link.click();
         }
 
+        function downloadSlide(index) {
+            if (!carouselSlides[index]) return;
+            const link = document.createElement('a');
+            link.download = `slide_${index + 1}.png`;
+            link.href = carouselSlides[index].toDataURL('image/png');
+            link.click();
+        }
+
+        async function downloadAllSlides() {
+            // Simple sequential download
+            for (let i = 0; i < carouselSlides.length; i++) {
+                downloadSlide(i);
+                await sleep(500);
+            }
+        }
+
         async function runWorkflow() {
             if (!getToken()) { alert('⚠️ Token girin!'); toggleConfig(); return; }
 
@@ -621,13 +967,13 @@
             const randomTopic = getRandomTopic(cat.topics);
 
             btn.disabled = true;
-            btn.textContent = '⏳ Oluşturuluyor...';
+            btn.innerHTML = '<span class="loading"></span>Oluşturuluyor...';
             document.getElementById('stepsPanel').style.display = 'block';
             document.getElementById('outputBox').style.display = 'none';
-            ['s1', 's2', 's3', 's4'].forEach(id => document.getElementById(id).className = 'step');
+            ['s1', 's2', 's3', 's4', 's5'].forEach(id => document.getElementById(id).className = 'step');
 
             try {
-                // STEP 1: Find viral question with random topic
+                // STEP 1: Find viral question
                 document.getElementById('s1').className = 'step active';
                 const questionPrompt = `2025 yılında ${cat.name} konusunda "${randomTopic}" hakkında viral olabilecek BİR soru üret.
 
@@ -641,78 +987,86 @@ KURALLAR:
                 currentQuestion = currentQuestion.replace(/[\*\#\"\']/g, '').trim();
                 if (!currentQuestion.endsWith('?')) currentQuestion += '?';
                 document.getElementById('s1').className = 'step done';
-                await sleep(800);
+                await sleep(500);
 
-                // STEP 2: Write voiceover (NATURAL HUMAN SPEECH)
+                // STEP 2: Write voiceover
                 document.getElementById('s2').className = 'step active';
-                const voicePrompt = `Aşağıdaki soru için, TÜRKÇE ve DOĞAL İNSAN KONUŞMASI gibi bir seslendirme metni yaz.
+                const voicePrompt = `Aşağıdaki soru için TÜRKÇE ve DOĞAL İNSAN KONUŞMASI gibi seslendirme metni yaz.
 
-SORU:
-"${currentQuestion}"
-
-KONU:
-${cat.name}
+SORU: "${currentQuestion}"
+KONU: ${cat.name}
 
 KONUŞMA TARZI:
 - Kamera karşısında anlatıyormuş gibi
-- Sanki karşında tek bir kişi var
-- Robot, sunum, makale dili YASAK
-- Nokta ve virgüller duraklama amacıyla kullanılmalı
-- Kısa cümleler
-- Akıcı, rahat, güven veren ton
+- Robot, sunum dili YASAK
+- Kısa cümleler, duraklamalı
+- Akıcı, rahat ton
 
 YAPI:
-1. Soruyu doğal bir şekilde tekrar sor (tek cümle)
-2. Kısa bir duraklama hissi ver
-3. "Peki asıl mesele ne?" benzeri bir geçiş yap
-4. 2 veya 3 kısa alt soru sor
-5. Şu iki cümleyi MUTLAKA kullan:
-   - "Cevaplar basit değil."
-   - "Ama doğru olanlar var."
-6. Kapanış:
-   "Açıklamayı oku.
-    Çünkü ${cat.name.toLowerCase()}, yanlış bilgiyi affetmez."
+1. Soruyu doğal şekilde sor
+2. "Peki asıl mesele ne?" benzeri geçiş
+3. 2-3 kısa alt soru
+4. "Cevaplar basit değil. Ama doğru olanlar var."
+5. "Açıklamayı oku. Çünkü ${cat.name.toLowerCase()}, yanlış bilgiyi affetmez."
 
-KURALLAR:
-- Emoji KULLANMA
-- Madde işareti KULLANMA
-- Sayı kullanma
-- Eğitim verir gibi konuşma
-- Hikaye anlatır gibi konuş
-- Metin SADECE SES için yazılsın`;
+KURALLAR: Emoji YOK, madde YOK, sayı YOK, sadece ses için`;
 
                 currentScript = await callAI(voicePrompt);
-                currentScript = currentScript.replace(/[\*\#\[\]\(\)\"]/g, '').trim();
+                currentScript = cleanForTTS(currentScript);
                 document.getElementById('s2').className = 'step done';
-                await sleep(800);
+                await sleep(500);
 
-                // STEP 3: Generate image
+                // STEP 3: Generate visuals
                 document.getElementById('s3').className = 'step active';
-                const imgUrl = await generateImage(cat.imagePrompt + ', high quality, instagram reels vertical');
-                createFinalImage(imgUrl, currentQuestion, cat);
+
+                if (selectedFormat === 'reels') {
+                    const imgUrl = await generateImage(cat.imagePrompt);
+                    createReelsImage(imgUrl, currentQuestion, cat);
+                    document.getElementById('reelsOutput').style.display = 'block';
+                    document.getElementById('carouselOutput').style.display = 'none';
+                } else {
+                    // Generate tips for carousel
+                    const tipsPrompt = `"${currentQuestion}" için 5 kısa ipucu yaz.
+Her ipucu 1 cümle olsun. Sadece ipuçlarını yaz, numara olmadan.`;
+                    const tipsRaw = await callAI(tipsPrompt);
+                    const tips = tipsRaw.split('\n').filter(t => t.trim().length > 10).slice(0, 5);
+                    await createCarouselSlides(currentQuestion, tips, cat);
+                    document.getElementById('reelsOutput').style.display = 'none';
+                    document.getElementById('carouselOutput').style.display = 'block';
+                }
                 document.getElementById('s3').className = 'step done';
                 await sleep(500);
 
-                // STEP 4: Caption with ANSWER + Hashtags
+                // STEP 4: Caption + Hashtags
                 document.getElementById('s4').className = 'step active';
                 const captionPrompt = `"${currentQuestion}" için Instagram AÇIKLAMASI yaz.
 
-BU AÇIKLAMA CEVABI İÇERMELİ!
-
+CEVABI İÇERMELİ!
 FORMAT:
 1. Kısa giriş
-2. 5 maddelik cevap (👉 ile başla)
-3. "💾 Kaydetmeden geçme!" ile bitir
-
-Profesyonel bilgi ver, kısa maddeler.`;
+2. 5 maddelik cevap (👉 ile)
+3. "💾 Kaydetmeden geçme!" ile bitir`;
 
                 currentCaption = await callAI(captionPrompt);
                 currentCaption = currentCaption.replace(/[\*\#\"]/g, '').trim();
 
-                const hashtagPrompt = `"${currentQuestion}" için 10 Türkçe hashtag yaz. Sadece hashtag'leri virgülle ayır.`;
+                const hashtagPrompt = `"${currentQuestion}" için 10 Türkçe hashtag yaz.`;
                 let hashtags = await callAI(hashtagPrompt);
                 hashtags = hashtags.match(/#[\wığüşöçİĞÜŞÖÇ]+/g) || [];
                 document.getElementById('s4').className = 'step done';
+                await sleep(500);
+
+                // STEP 5: Generate TTS Audio
+                document.getElementById('s5').className = 'step active';
+                try {
+                    currentAudioBlob = await generateTTS(currentScript);
+                    const audioUrl = URL.createObjectURL(currentAudioBlob);
+                    document.getElementById('ttsAudio').src = audioUrl;
+                    document.getElementById('downloadAudioBtn').disabled = false;
+                } catch (e) {
+                    console.log('TTS error, using fallback');
+                }
+                document.getElementById('s5').className = 'step done';
 
                 // Display results
                 document.getElementById('outputBox').style.display = 'block';
@@ -726,11 +1080,10 @@ Profesyonel bilgi ver, kısa maddeler.`;
             }
 
             btn.disabled = false;
-            btn.textContent = '🔄 YENİ İÇERİK';
+            btn.textContent = '🔄 YENİ İÇERİK OLUŞTUR';
         }
 
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-        speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
     </script>
 </body>
 
